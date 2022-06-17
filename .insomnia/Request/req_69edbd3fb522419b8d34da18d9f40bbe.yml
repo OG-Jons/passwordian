@@ -1,0 +1,30 @@
+_id: req_69edbd3fb522419b8d34da18d9f40bbe
+type: Request
+parentId: wrk_d75794b3a20946f38ee05d6e4064800c
+modified: 1655466859292
+created: 1655453994668
+url: localhost:3000/auth/signup
+name: Signup
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"username": "Jons",
+    	"password": "BingChilling8708."
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+    id: pair_1c81da96a66740cab3cea0383158cf2f
+authentication: {}
+metaSortKey: -1655453994668
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
