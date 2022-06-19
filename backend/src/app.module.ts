@@ -9,6 +9,7 @@ import { EncryptionService } from './encryption/encryption.service';
 
 @Module({
   imports: [TypeOrmModule.forRoot(typeOrmConfig), PasswordsModule, AuthModule, CategoriesModule],
+  providers: [EncryptionService],
 })
 export class AppModule {
   constructor(private dataSource: DataSource) {}
