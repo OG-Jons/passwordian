@@ -1,0 +1,25 @@
+_id: req_wrk_d75794b3a20946f38ee05d6e4064800c7b20a1c6
+type: Request
+parentId: wrk_d75794b3a20946f38ee05d6e4064800c
+modified: 1655642282944
+created: 1655642282944
+url: "{{ base_url }}/auth/signin"
+name: /auth/signin
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: "{}"
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+authentication: {}
+metaSortKey: -1655642282944
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

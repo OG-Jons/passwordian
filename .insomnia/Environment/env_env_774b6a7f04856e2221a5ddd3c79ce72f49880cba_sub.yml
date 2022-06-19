@@ -1,0 +1,15 @@
+_id: env_env_774b6a7f04856e2221a5ddd3c79ce72f49880cba_sub
+type: Environment
+parentId: env_774b6a7f04856e2221a5ddd3c79ce72f49880cba
+modified: 1655642282965
+created: 1655642282965
+name: OpenAPI env
+data:
+  scheme: http
+  base_path: ""
+  host: example.com
+  bearerToken: bearerToken
+dataPropertyOrder: null
+color: null
+isPrivate: false
+metaSortKey: 1655642282965

@@ -1,8 +1,10 @@
 _id: spc_10685f0445684fcfaa68761e38795164
 type: ApiSpec
 parentId: wrk_d75794b3a20946f38ee05d6e4064800c
-modified: 1655453994645
+modified: 1655642307160
 created: 1655453994645
-fileName: New Document
-contents: ""
+fileName: Passwordian
+contents: '{"openapi":"3.0.0","paths":{"/passwords":{"post":{"operationId":"PasswordsController_create","parameters":[],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/CreatePasswordDto"}}}},"responses":{"201":{"description":""}},"tags":["Passwords"]},"get":{"operationId":"PasswordsController_findAll","parameters":[],"responses":{"200":{"description":""}},"tags":["Passwords"]}},"/passwords/{id}":{"get":{"operationId":"PasswordsController_findOne","parameters":[{"name":"id","required":true,"in":"path","schema":{"type":"string"}}],"responses":{"200":{"description":""}},"tags":["Passwords"]},"patch":{"operationId":"PasswordsController_update","parameters":[{"name":"id","required":true,"in":"path","schema":{"type":"string"}}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/UpdatePasswordDto"}}}},"responses":{"200":{"description":""}},"tags":["Passwords"]},"delete":{"operationId":"PasswordsController_remove","parameters":[{"name":"id","required":true,"in":"path","schema":{"type":"string"}}],"responses":{"200":{"description":""}},"tags":["Passwords"]}},"/auth/signup":{"post":{"operationId":"AuthController_signUp","parameters":[],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/AuthCredentialsDto"}}}},"responses":{"201":{"description":""}},"tags":["Authentication"]}},"/auth/signin":{"post":{"operationId":"AuthController_signIn","parameters":[],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/AuthCredentialsDto"}}}},"responses":{"201":{"description":""}},"tags":["Authentication"]}},"/auth/test":{"post":{"operationId":"AuthController_test","parameters":[],"responses":{"201":{"description":""}},"tags":["Authentication"]}}},"info":{"title":"Passwordian
+  Endpoints","description":"All the Endpoints for the Passwordian
+  API","version":"1.0","contact":{}},"tags":[],"servers":[],"components":{"securitySchemes":{"bearer":{"scheme":"bearer","bearerFormat":"JWT","type":"http"}},"schemas":{"CreatePasswordDto":{"type":"object","properties":{}},"UpdatePasswordDto":{"type":"object","properties":{}},"AuthCredentialsDto":{"type":"object","properties":{}}}}}'
 contentType: yaml

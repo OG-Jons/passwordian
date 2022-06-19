@@ -1,0 +1,21 @@
+_id: req_wrk_d75794b3a20946f38ee05d6e4064800c4bbb6ab6
+type: Request
+parentId: wrk_d75794b3a20946f38ee05d6e4064800c
+modified: 1655642282951
+created: 1655642282951
+url: "{{ base_url }}/passwords/{{ id }}"
+name: /passwords/{id}
+description: ""
+method: GET
+body: {}
+parameters: []
+headers: []
+authentication: {}
+metaSortKey: -1655642282951
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

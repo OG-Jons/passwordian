@@ -1,0 +1,21 @@
+_id: req_wrk_d75794b3a20946f38ee05d6e4064800cb74d30f1
+type: Request
+parentId: wrk_d75794b3a20946f38ee05d6e4064800c
+modified: 1655642282942
+created: 1655642282942
+url: "{{ base_url }}/auth/test"
+name: /auth/test
+description: ""
+method: POST
+body: {}
+parameters: []
+headers: []
+authentication: {}
+metaSortKey: -1655642282942
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

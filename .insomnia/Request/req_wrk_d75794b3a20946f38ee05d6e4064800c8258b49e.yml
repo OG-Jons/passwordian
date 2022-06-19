@@ -1,0 +1,21 @@
+_id: req_wrk_d75794b3a20946f38ee05d6e4064800c8258b49e
+type: Request
+parentId: wrk_d75794b3a20946f38ee05d6e4064800c
+modified: 1655642282947
+created: 1655642282947
+url: "{{ base_url }}/passwords/{{ id }}"
+name: /passwords/{id}
+description: ""
+method: DELETE
+body: {}
+parameters: []
+headers: []
+authentication: {}
+metaSortKey: -1655642282947
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

@@ -1,0 +1,25 @@
+_id: req_wrk_d75794b3a20946f38ee05d6e4064800c14e2ba97
+type: Request
+parentId: wrk_d75794b3a20946f38ee05d6e4064800c
+modified: 1655642282949
+created: 1655642282949
+url: "{{ base_url }}/passwords/{{ id }}"
+name: /passwords/{id}
+description: ""
+method: PATCH
+body:
+  mimeType: application/json
+  text: "{}"
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+authentication: {}
+metaSortKey: -1655642282949
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
