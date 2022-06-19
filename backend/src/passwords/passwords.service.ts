@@ -1,26 +1,41 @@
 import { Injectable } from '@nestjs/common';
 import { CreatePasswordDto } from './dto/create-password.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Password } from './entities/password.entity';
+import { DeleteResult, Repository, UpdateResult } from 'typeorm';
+import { GetUser } from '../auth/get-user.decorator';
+import { User } from '../auth/user.entity';
 
 @Injectable()
 export class PasswordsService {
-  create(createPasswordDto: CreatePasswordDto) {
-    return 'This action adds a new password';
+  constructor(
+    @InjectRepository(Password)
+    private passwordRepository: Repository<Password>,
+  ) {}
+
+  create(createPasswordDto: CreatePasswordDto): Promise<Password> {
+    return this.passwordRepository.save(createPasswordDto);
   }
 
-  findAll() {
-    return `This action returns all passwords`;
+  findAllFromUser(user: User): Promise<Password[]> {
+    return this.passwordRepository.find({
+      where: { username: user.username },
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} password`;
+  findOne(id: number): Promise<Password> {
+    return this.passwordRepository.findOne({ where: { id } });
   }
 
-  update(id: number, updatePasswordDto: UpdatePasswordDto) {
-    return `This action updates a #${id} password`;
+  update(
+    id: number,
+    updatePasswordDto: UpdatePasswordDto,
+  ): Promise<UpdateResult> {
+    return this.passwordRepository.update(id, updatePasswordDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} password`;
+  remove(id: number): Promise<DeleteResult> {
+    return this.passwordRepository.delete(id);
   }
 }
