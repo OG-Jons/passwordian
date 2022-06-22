@@ -32,7 +32,6 @@ export class User extends BaseEntity {
   categories: Category[];
 
   async validatePassword(password: string): Promise<boolean> {
-    const hash = await bcrypt.hash(password, this.salt);
-    return hash === this.masterPassword;
+    return await bcrypt.compare(password, this.masterPassword);
   }
 }

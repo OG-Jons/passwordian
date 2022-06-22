@@ -5,15 +5,16 @@ import {
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
-import * as bcrypt from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { EncryptionService } from 'src/encryption/encryption.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
+    private encryptionService: EncryptionService,
   ) {}
 
   async signUp(authCredentialsDto: AuthCredentialsDto): Promise<void> {
@@ -21,8 +22,11 @@ export class UserService {
 
     const user = new User();
     user.username = username;
-    user.salt = await bcrypt.genSalt();
-    user.masterPassword = await this.hashPassword(password, user.salt);
+    user.masterPassword = await this.encryptionService.encryptWithSalt(
+      password,
+    );
+
+    console.log(user.masterPassword);
 
     try {
       await user.save();
@@ -45,9 +49,5 @@ export class UserService {
       return user.username;
     }
     return null;
-  }
-
-  async hashPassword(password: string, salt: string): Promise<string> {
-    return await bcrypt.hash(password, salt);
   }
 }
