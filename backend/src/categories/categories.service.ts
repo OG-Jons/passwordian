@@ -51,7 +51,7 @@ export class CategoriesService {
     if (!(await this.checkIfCategoryExists(id))) {
       throw new NotFoundException('Category not found');
     }
-    if (await this.checkIfUserHasCategory(user.id, id)) {
+    if (!(await this.checkIfUserHasCategory(user.id, id))) {
       throw new ForbiddenException('This is not your category');
     }
 
@@ -62,7 +62,7 @@ export class CategoriesService {
     if (!(await this.checkIfCategoryExists(id))) {
       throw new NotFoundException('Category not found');
     }
-    if (await this.checkIfUserHasCategory(user.id, id)) {
+    if (!(await this.checkIfUserHasCategory(user.id, id))) {
       throw new ForbiddenException('This is not your category');
     }
     return await this.categoryRepository.delete(id);
@@ -83,6 +83,6 @@ export class CategoriesService {
       user: { id: userID },
     });
 
-    return !!!category;
+    return !!category;
   }
 }
