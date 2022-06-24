@@ -26,8 +26,6 @@ export class UserService {
       password,
     );
 
-    console.log(user.masterPassword);
-
     try {
       await user.save();
     } catch (e) {

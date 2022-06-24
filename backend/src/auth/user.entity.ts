@@ -9,6 +9,7 @@ import {
 import * as bcrypt from 'bcrypt';
 import { Password } from '../passwords/entities/password.entity';
 import { Category } from '../categories/entities/category.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 @Unique(['username'])
@@ -19,11 +20,9 @@ export class User extends BaseEntity {
   @Column()
   username: string;
 
+  @Exclude({ toPlainOnly: true })
   @Column()
   masterPassword: string;
-
-  @Column()
-  salt: string;
 
   @OneToMany(() => Password, (password) => password.user, { eager: true })
   passwords: Password[];

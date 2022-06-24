@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import { Password } from '../../passwords/entities/password.entity';
 import { User } from '../../auth/user.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class Category {
@@ -19,6 +20,12 @@ export class Category {
   @OneToMany(() => Password, (password) => password.category)
   passwords: Password[];
 
+  @Exclude({ toPlainOnly: true })
   @ManyToOne(() => User, (user) => user.categories)
   user: User;
+
+  constructor(name: string, user?: User) {
+    this.name = name;
+    this.user = user;
+  }
 }

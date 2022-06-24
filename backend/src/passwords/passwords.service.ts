@@ -4,7 +4,6 @@ import { UpdatePasswordDto } from './dto/update-password.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Password } from './entities/password.entity';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
-import { GetUser } from '../auth/get-user.decorator';
 import { User } from '../auth/user.entity';
 
 @Injectable()
