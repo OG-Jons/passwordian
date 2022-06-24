@@ -48,12 +48,13 @@ export class CategoriesController {
   async update(
     @Param('id') id: string,
     @Body() updateCategoryDto: UpdateCategoryDto,
+    @GetUser() user: User,
   ) {
-    return await this.categoriesService.update(+id, updateCategoryDto);
+    return await this.categoriesService.update(+id, updateCategoryDto, user);
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string) {
-    return await this.categoriesService.remove(+id);
+  async remove(@Param('id') id: string, @GetUser() user: User) {
+    return await this.categoriesService.remove(+id, user);
   }
 }

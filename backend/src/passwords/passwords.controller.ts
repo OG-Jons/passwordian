@@ -7,6 +7,8 @@ import {
   Param,
   Delete,
   UseGuards,
+  UseInterceptors,
+  ClassSerializerInterceptor,
 } from '@nestjs/common';
 import { PasswordsService } from './passwords.service';
 import { CreatePasswordDto } from './dto/create-password.dto';
@@ -25,9 +27,13 @@ import { DeleteResult, UpdateResult } from 'typeorm';
 export class PasswordsController {
   constructor(private readonly passwordsService: PasswordsService) {}
 
+  @UseInterceptors(ClassSerializerInterceptor)
   @Post()
-  create(@Body() createPasswordDto: CreatePasswordDto): Promise<Password> {
-    return this.passwordsService.create(createPasswordDto);
+  create(
+    @Body() createPasswordDto: CreatePasswordDto,
+    @GetUser() user: User,
+  ): Promise<Password> {
+    return this.passwordsService.create(createPasswordDto, user);
   }
 
   @Get()
@@ -36,20 +42,24 @@ export class PasswordsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<Password> {
-    return this.passwordsService.findOne(+id);
+  findOne(@Param('id') id: string, @GetUser() user: User): Promise<Password> {
+    return this.passwordsService.findOne(+id, user);
   }
 
   @Patch(':id')
   update(
     @Param('id') id: string,
     @Body() updatePasswordDto: UpdatePasswordDto,
+    @GetUser() user: User,
   ): Promise<UpdateResult> {
-    return this.passwordsService.update(+id, updatePasswordDto);
+    return this.passwordsService.update(+id, updatePasswordDto, user);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string): Promise<DeleteResult> {
-    return this.passwordsService.remove(+id);
+  remove(
+    @Param('id') id: string,
+    @GetUser() user: User,
+  ): Promise<DeleteResult> {
+    return this.passwordsService.remove(+id, user);
   }
 }

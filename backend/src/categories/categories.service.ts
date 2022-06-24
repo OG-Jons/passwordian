@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -14,9 +18,9 @@ export class CategoriesService {
   ) {}
 
   create(createCategoryDto: CreateCategoryDto, user: User): Promise<Category> {
-    const newCategory = new Category(createCategoryDto.name, user);
-
-    return this.categoryRepository.save(newCategory);
+    return this.categoryRepository.save(
+      new Category(createCategoryDto.name, user),
+    );
   }
 
   findAllOfUser(userID: number): Promise<Category[]> {
@@ -42,23 +46,43 @@ export class CategoriesService {
   async update(
     id: number,
     updateCategoryDto: UpdateCategoryDto,
+    user: User,
   ): Promise<UpdateResult> {
-    const updated = await this.categoryRepository.update(id, updateCategoryDto);
-
-    if (updated.affected === 0) {
+    if (!(await this.checkIfCategoryExists(id))) {
       throw new NotFoundException('Category not found');
     }
+    if (await this.checkIfUserHasCategory(user.id, id)) {
+      throw new ForbiddenException('This is not your category');
+    }
 
-    return updated;
+    return await this.categoryRepository.update(id, updateCategoryDto);
   }
 
-  async remove(id: number): Promise<DeleteResult> {
-    const removed = await this.categoryRepository.delete(id);
-
-    if (removed.affected === 0) {
+  async remove(id: number, user: User): Promise<DeleteResult> {
+    if (!(await this.checkIfCategoryExists(id))) {
       throw new NotFoundException('Category not found');
     }
+    if (await this.checkIfUserHasCategory(user.id, id)) {
+      throw new ForbiddenException('This is not your category');
+    }
+    return await this.categoryRepository.delete(id);
+  }
 
-    return this.categoryRepository.delete(id);
+  async checkIfCategoryExists(id: number): Promise<boolean> {
+    const category = await this.categoryRepository.findOneBy({ id });
+
+    return !!category;
+  }
+
+  async checkIfUserHasCategory(
+    userID: number,
+    categoryID: number,
+  ): Promise<boolean> {
+    const category = await this.categoryRepository.findOneBy({
+      id: categoryID,
+      user: { id: userID },
+    });
+
+    return !!!category;
   }
 }
