@@ -6,31 +6,28 @@ import { isAuthenticated } from './services/AuthService'
 
 
 function App() {
-
   return (
-
     <div className="App">
       <p className="App-header">Passwordian</p>
       <Routes>
         <Route
-            path="/"
-            element={<AuthWrapper isAuthenticated={isAuthenticated()}/>}
-          />
+          path="/"
+          element={<AuthWrapper isAuthenticated={isAuthenticated()} />}
+        />
         <Route path="/passwords" element={<Passwords />} />
         <Route path="/login" element={<Login />} />
       </Routes>
     </div>
-  )
+  );
 }
 
 
-const AuthWrapper = ({isAuthenticated}) => {
-  if(isAuthenticated){
-      return <Navigate to="/passwords" replace />
+const AuthWrapper = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
+  if (isAuthenticated) {
+    return <Navigate to="/passwords" replace />;
   } else {
-    return <Navigate to="/login" replace />
+    return <Navigate to="/login" replace />;
   }
 };
 
-
-export default App
+export default App;
