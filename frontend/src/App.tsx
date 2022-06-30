@@ -15,13 +15,10 @@ function App() {
         <Route
             path="/"
             element={<AuthWrapper isAuthenticated={isAuthenticated()}/>}
-            // element={isAuthenticated(true)}
           />
         <Route path="/passwords" element={<Passwords />} />
         <Route path="/login" element={<Login />} />
       </Routes>
-      {/* <header className="App-header">
-      </header> */}
     </div>
   )
 }

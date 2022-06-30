@@ -8,7 +8,6 @@ function Passwords() {
     const [passwords, setPasswords] = useState<any[]>([{ name: 'test', password: 'safePassword' }])
 
     if (isAuthenticated()) {
-        {/* <Box sx={{ background: "#444" }}> */ }
         return (
             <Box style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', }}>
                 <List>
