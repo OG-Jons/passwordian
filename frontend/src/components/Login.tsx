@@ -1,10 +1,8 @@
-import React from 'react'
 import { Navigate } from 'react-router-dom'
+import { isAuthenticated } from '../services/AuthService'
 
-function Login() {
-  const isAuthenticated = true;
-  
-  if (isAuthenticated) {
+function Login() { 
+  if (isAuthenticated()) {
     return <Navigate to="/passwords" replace />
   } else {
     return <p>login</p>

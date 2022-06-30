@@ -2,30 +2,28 @@ import { Box, List, ListItem, ListItemButton, TextField } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useState } from 'react'
 import { Navigate } from 'react-router-dom';
+import { isAuthenticated } from '../services/AuthService';
 
 function Passwords() {
     const [passwords, setPasswords] = useState<any[]>([{ name: 'test', password: 'safePassword' }])
 
-    const isAuthenticated = true;
-
-    if (isAuthenticated) {
+    if (isAuthenticated()) {
+        {/* <Box sx={{ background: "#444" }}> */ }
         return (
-            // <Box sx={{ background: "#444" }}>
-            <Box>
+            <Box style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', }}>
                 <List>
                     {passwords.map(password => {
                         return <ListItem>
-                            <ListItemButton>
-                                <TextField id="outlined-basic" label="Name" variant="outlined" />
-                                <TextField id="outlined-basic" label="Username/Email" variant="outlined" />
-                                <TextField id="outlined-basic" label="Password" variant="outlined" />
-                                <DeleteIcon />
+                            <TextField id="outlined-basic" label="Name" variant="outlined" />
+                            <TextField id="outlined-basic" label="Username/Email" variant="outlined" />
+                            <TextField id="outlined-basic" label="Password" variant="outlined" />
+                            <ListItemButton style={{height:'100vh'}}>
+                                <DeleteIcon style={{height:'100vh'}}/>
                             </ListItemButton>
                         </ListItem>;
                     })}
                 </List>
             </Box>
-
         )
     }
     else {

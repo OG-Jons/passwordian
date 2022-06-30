@@ -1,7 +1,8 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import './App.scss'
-import Login from './Login'
-import Passwords from './Passwords'
+import Login from './components/Login'
+import Passwords from './components/Passwords'
+import { isAuthenticated } from './services/AuthService'
 
 
 function App() {
@@ -13,7 +14,7 @@ function App() {
       <Routes>
         <Route
             path="/"
-            element={<AuthWrapper isAuthenticated={true}/>}
+            element={<AuthWrapper isAuthenticated={isAuthenticated()}/>}
             // element={isAuthenticated(true)}
           />
         <Route path="/passwords" element={<Passwords />} />
@@ -25,13 +26,6 @@ function App() {
   )
 }
 
-// const isAuthenticated = (isAuthenticated: boolean) => {
-//   if(isAuthenticated){
-//     return <Passwords />
-//   } else {
-//     return <Login/>
-//   }
-// }
 
 const AuthWrapper = ({isAuthenticated}) => {
   if(isAuthenticated){
