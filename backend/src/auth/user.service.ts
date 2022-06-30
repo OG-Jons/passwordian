@@ -8,6 +8,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { EncryptionService } from 'src/encryption/encryption.service';
+import { UpdatePasswordDto } from './dto/update-password.dto';
 
 @Injectable()
 export class UserService {
@@ -38,7 +39,7 @@ export class UserService {
   }
 
   async validateUserPassword(
-    authCredentials: AuthCredentialsDto,
+    authCredentials: AuthCredentialsDto | UpdatePasswordDto,
   ): Promise<string> {
     const { username, password } = authCredentials;
     const user = await this.userRepository.findOne({ where: { username } });
@@ -47,5 +48,21 @@ export class UserService {
       return user.username;
     }
     return null;
+  }
+
+  async updateMasterPassword(
+    updatePasswordDto: UpdatePasswordDto,
+  ): Promise<boolean> {
+    const { username, password, newPassword } = updatePasswordDto;
+    const user = await this.userRepository.findOne({ where: { username } });
+
+    if (user && (await user.validatePassword(password))) {
+      user.masterPassword = await this.encryptionService.encryptWithSalt(
+        newPassword,
+      );
+      await user.save();
+      return true;
+    }
+    return false;
   }
 }
