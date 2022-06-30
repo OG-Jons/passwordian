@@ -14,8 +14,9 @@ function App() {
           path="/"
           element={<AuthWrapper isAuthenticated={isAuthenticated()} />}
         />
-        <Route path="/passwords" element={<Passwords />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/passwords" element={<Passwords />} />)
+        <Route path='*' element={<p>404: Site not found</p>} />
       </Routes>
     </div>
   );

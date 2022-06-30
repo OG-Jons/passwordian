@@ -1,7 +1,7 @@
 import { Box, List, ListItem, ListItemButton, TextField } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { useState } from 'react'
-import { Navigate } from 'react-router-dom';
+import { useEffect, useState } from 'react'
+import { Navigate, useNavigate } from 'react-router-dom';
 import { isAuthenticated } from '../services/AuthService';
 
 function Passwords() {
@@ -16,8 +16,8 @@ function Passwords() {
                             <TextField id="outlined-basic" label="Name" variant="outlined" />
                             <TextField id="outlined-basic" label="Username/Email" variant="outlined" />
                             <TextField id="outlined-basic" label="Password" variant="outlined" />
-                            <ListItemButton style={{height:'100vh'}}>
-                                <DeleteIcon style={{height:'100vh'}}/>
+                            <ListItemButton style={{ height: '100vh' }}>
+                                <DeleteIcon style={{ height: '100vh' }} />
                             </ListItemButton>
                         </ListItem>;
                     })}
@@ -26,7 +26,7 @@ function Passwords() {
         )
     }
     else {
-        return <Navigate to="/passwords" replace />
+        return <Navigate to="/login" replace />
     }
 }
 
