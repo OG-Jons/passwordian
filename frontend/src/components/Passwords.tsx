@@ -1,11 +1,20 @@
-import { Box, List, ListItem, ListItemButton, TextField } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { useEffect, useState } from 'react'
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Box, List, ListItem, ListItemButton, TextField } from '@mui/material';
+import { useState } from 'react';
+import { Navigate } from 'react-router-dom';
 import { isAuthenticated } from '../services/AuthService';
+import { Password } from '../types';
 
 function Passwords() {
-    const [passwords, setPasswords] = useState<any[]>([{ name: 'test', password: 'safePassword' }])
+    const [passwords, setPasswords] = useState<Password[]>([{
+            id: 1,
+            title: 'example',
+            website: 'example.org',
+            username: '',
+            password: 'examplepw',
+            description: 'this is a example',
+            // user: ,
+         }])
 
     if (isAuthenticated()) {
         return (
