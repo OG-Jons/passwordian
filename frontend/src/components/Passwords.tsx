@@ -63,8 +63,8 @@ function Passwords() {
                             <TextField id="outlined-password-input" label="Password" variant="outlined" type="password" value={password.password} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                 password.password=e.target.value;
                                 handleChange(password, e)}}/>
-                            <ListItemButton style={{ height: '100vh' }}>
-                                <DeleteIcon style={{ height: '100vh' }} />
+                            <ListItemButton>
+                                <DeleteIcon/>
                             </ListItemButton>
                         </ListItem>;
                     })}
