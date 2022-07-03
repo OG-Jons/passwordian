@@ -40,7 +40,6 @@ export class PasswordsService {
 
   async findAllFromUser(user: User): Promise<Password[]> {
     return await this.passwordRepository.findBy({
-      username: user.username,
       user: { id: user.id },
     });
   }

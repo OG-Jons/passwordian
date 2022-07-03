@@ -61,13 +61,11 @@ export class UserService {
     const user = await this.userRepository.findOne({ where: { username } });
 
     if (user && (await user.validatePassword(password))) {
-      console.log('New: ', newPassword);
-      console.log('Old: ', user.masterPassword);
       user.masterPassword = await this.encryptionService.encryptWithSalt(
         newPassword,
       );
-      console.log('New: ', user.masterPassword);
-      await user.save();
+      await this.userRepository.softDelete(user.id);
+      await this.userRepository.save(user);
       return true;
     }
     return false;

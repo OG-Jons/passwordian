@@ -29,37 +29,42 @@ export class PasswordsController {
 
   @UseInterceptors(ClassSerializerInterceptor)
   @Post()
-  create(
+  async create(
     @Body() createPasswordDto: CreatePasswordDto,
     @GetUser() user: User,
   ): Promise<Password> {
-    return this.passwordsService.create(createPasswordDto, user);
+    return await this.passwordsService.create(createPasswordDto, user);
   }
 
   @Get()
-  findAll(@GetUser() user: User): Promise<Password[]> {
-    return this.passwordsService.findAllFromUser(user);
+  async findAll(@GetUser() user: User): Promise<Password[]> {
+    const passwords = await this.passwordsService.findAllFromUser(user);
+    console.log(passwords);
+    return passwords;
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string, @GetUser() user: User): Promise<Password> {
-    return this.passwordsService.findOne(+id, user);
+  async findOne(
+    @Param('id') id: string,
+    @GetUser() user: User,
+  ): Promise<Password> {
+    return await this.passwordsService.findOne(+id, user);
   }
 
   @Patch(':id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updatePasswordDto: UpdatePasswordDto,
     @GetUser() user: User,
   ): Promise<UpdateResult> {
-    return this.passwordsService.update(+id, updatePasswordDto, user);
+    return await this.passwordsService.update(+id, updatePasswordDto, user);
   }
 
   @Delete(':id')
-  remove(
+  async remove(
     @Param('id') id: string,
     @GetUser() user: User,
   ): Promise<DeleteResult> {
-    return this.passwordsService.remove(+id, user);
+    return await this.passwordsService.remove(+id, user);
   }
 }

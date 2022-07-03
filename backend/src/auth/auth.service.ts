@@ -125,7 +125,7 @@ export class AuthService {
       cipher.update(textToEncrypt),
       cipher.final(),
     ]);
-    return encryptedText.toString('utf-8');
+    return encryptedText.toString('base64');
   }
 
   decryptPassword = async (
@@ -134,12 +134,12 @@ export class AuthService {
     iv: Buffer,
   ): Promise<string> => {
     // Convert encryptedText to buffer
-    const encryptedTextBuffer = Buffer.from(encryptedText, 'utf-8');
+    const encryptedTextBuffer = Buffer.from(encryptedText, 'base64');
     const decipher = createDecipheriv('aes-256-ctr', key, iv);
     const decryptedText = Buffer.concat([
       decipher.update(encryptedTextBuffer),
       decipher.final(),
     ]);
-    return decryptedText.toString('utf-8');
+    return decryptedText.toString('base64');
   };
 }
