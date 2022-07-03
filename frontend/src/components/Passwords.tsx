@@ -61,7 +61,7 @@ function Passwords() {
             return (
               <ListItem key={password.id}>
                 <TextField
-                  id="outlined-basic"
+                  id={'title'+password.id}
                   label="Title"
                   variant="outlined"
                   value={password.title}
@@ -71,8 +71,8 @@ function Passwords() {
                   }}
                 ></TextField>
                 <TextField
-                  id="outlined-basic"
-                  label="website"
+                  id={'website'+password.id}
+                  label="Website"
                   variant="outlined"
                   value={password.website}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -81,7 +81,7 @@ function Passwords() {
                   }}
                 />
                 <TextField
-                  id="outlined-basic"
+                  id={'username'+password.id}
                   label="Username/Email"
                   variant="outlined"
                   value={password.username}
@@ -91,7 +91,7 @@ function Passwords() {
                   }}
                 />
                 <TextField
-                  id="outlined-basic"
+                  id={'description'+password.id}
                   label="description"
                   variant="outlined"
                   value={password.description}
@@ -101,7 +101,7 @@ function Passwords() {
                   }}
                 />
                 <TextField
-                  id="outlined-password-input"
+                  id={'password'+password.id}
                   label="Password"
                   variant="outlined"
                   type="password"
