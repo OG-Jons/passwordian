@@ -1,9 +1,8 @@
-import { Navigate, Route, Routes } from 'react-router-dom'
-import './App.scss'
-import Login from './components/Login'
-import Passwords from './components/Passwords'
-import { isAuthenticated } from './services/AuthService'
-
+import { Navigate, Route, Routes } from "react-router-dom";
+import "./App.scss";
+import Login from "./components/Login";
+import Passwords from "./components/Passwords";
+import { isAuthenticated } from "./services/AuthService";
 
 function App() {
   return (
@@ -16,12 +15,11 @@ function App() {
         />
         <Route path="/login" element={<Login />} />
         <Route path="/passwords" element={<Passwords />} />)
-        <Route path='*' element={<p>404: Site not found</p>} />
+        <Route path="*" element={<p>404: Site not found</p>} />
       </Routes>
     </div>
   );
 }
-
 
 const AuthWrapper = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
   if (isAuthenticated) {

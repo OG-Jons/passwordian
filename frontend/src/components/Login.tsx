@@ -1,13 +1,21 @@
-import { Button, TextField } from '@mui/material'
-import { Navigate } from 'react-router-dom'
-import { isAuthenticated } from '../services/AuthService'
+import { Button, TextField } from "@mui/material";
+import { Navigate } from "react-router-dom";
+import { isAuthenticated } from "../services/AuthService";
 
 function Login() {
   if (isAuthenticated()) {
-    return <Navigate to="/passwords" replace />
+    return <Navigate to="/passwords" replace />;
   } else {
     return (
-      <div style={{ marginTop: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', }}>
+      <div
+        style={{
+          marginTop: 10,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexDirection: "column",
+        }}
+      >
         <TextField
           style={{ margin: 5 }}
           id="outlined-basic"
@@ -20,10 +28,12 @@ function Login() {
           label="Password"
           type="password"
         />
-        <Button style={{ margin: 5 }} variant="outlined">Login</Button>
+        <Button style={{ margin: 5 }} variant="outlined">
+          Login
+        </Button>
       </div>
-    )
+    );
   }
 }
 
-export default Login
+export default Login;
