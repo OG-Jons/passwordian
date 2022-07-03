@@ -8,6 +8,10 @@ import { JwtStrategy } from './jwt.strategy';
 import { User } from './user.entity';
 import { UserService } from './user.service';
 import { EncryptionService } from '../encryption/encryption.service';
+import { PasswordsService } from '../passwords/passwords.service';
+import { Password } from '../passwords/entities/password.entity';
+import { CategoriesService } from '../categories/categories.service';
+import { Category } from '../categories/entities/category.entity';
 
 @Module({
   imports: [
@@ -18,10 +22,17 @@ import { EncryptionService } from '../encryption/encryption.service';
         expiresIn: 3600,
       },
     }),
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User, Password, Category]),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, UserService, EncryptionService],
+  providers: [
+    AuthService,
+    JwtStrategy,
+    PasswordsService,
+    CategoriesService,
+    UserService,
+    EncryptionService,
+  ],
   exports: [JwtStrategy, PassportModule],
 })
 export class AuthModule {}

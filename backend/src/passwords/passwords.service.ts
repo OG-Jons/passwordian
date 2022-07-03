@@ -100,4 +100,8 @@ export class PasswordsService {
 
     return !!password;
   }
+
+  async updatePasswords(passwords: Password[]): Promise<Password[]> {
+    return await this.passwordRepository.save(passwords);
+  }
 }

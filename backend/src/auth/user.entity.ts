@@ -30,6 +30,12 @@ export class User extends BaseEntity {
   @OneToMany(() => Category, (category) => category.user, { eager: true })
   categories: Category[];
 
+  @Column({ nullable: true })
+  iv: Buffer;
+
+  @Column({ nullable: true })
+  key: Buffer;
+
   async validatePassword(password: string): Promise<boolean> {
     return await bcrypt.compare(password, this.masterPassword);
   }

@@ -41,6 +41,6 @@ export class AuthController {
     @GetUser() user: User,
   ): Promise<{ accessToken: string }> {
     updatePasswordDto.username = user.username;
-    return await this.authService.updateMasterPassword(updatePasswordDto);
+    return await this.authService.updateMasterPassword(updatePasswordDto, user);
   }
 }

@@ -9,6 +9,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { EncryptionService } from 'src/encryption/encryption.service';
 import { UpdatePasswordDto } from './dto/update-password.dto';
+import { randomBytes, scrypt } from 'crypto';
+import { promisify } from 'util';
 
 @Injectable()
 export class UserService {
@@ -26,6 +28,8 @@ export class UserService {
     user.masterPassword = await this.encryptionService.encryptWithSalt(
       password,
     );
+    user.iv = randomBytes(16);
+    user.key = (await promisify(scrypt)(password, 'salt', 32)) as Buffer;
 
     try {
       await user.save();
@@ -57,9 +61,12 @@ export class UserService {
     const user = await this.userRepository.findOne({ where: { username } });
 
     if (user && (await user.validatePassword(password))) {
+      console.log('New: ', newPassword);
+      console.log('Old: ', user.masterPassword);
       user.masterPassword = await this.encryptionService.encryptWithSalt(
         newPassword,
       );
+      console.log('New: ', user.masterPassword);
       await user.save();
       return true;
     }
