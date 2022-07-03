@@ -25,17 +25,17 @@ function Passwords() {
     },
   ]);
 
-  const [entry, setEntry] = useState<string>();
-
   const handleChange = (
-    password: Password,
+    newPassword: Password,
   ) => {
-    const pw: Password = passwords.filter(
-      (password1) => (password1 = password)
+    const oldPassword: Password = passwords.filter(
+      (oldPassword1) => (oldPassword1.id === newPassword.id)
     )[0];
-    passwords.splice(passwords.indexOf(pw));
-    setPasswords([...passwords, pw]);
-    console.log(pw);
+
+    var newPasswords = [...passwords];
+    newPasswords[passwords.indexOf(oldPassword)] = newPassword;
+
+    setPasswords(newPasswords);
     updatePasswordsOnServer();
   };
 
@@ -57,7 +57,7 @@ function Passwords() {
             return (
               <ListItem key={password.id}>
                 <TextField
-                  id={'title'+password.id}
+                  id={'title' + password.id}
                   label="Title"
                   variant="outlined"
                   value={password.title}
@@ -67,7 +67,7 @@ function Passwords() {
                   }}
                 ></TextField>
                 <TextField
-                  id={'website'+password.id}
+                  id={'website' + password.id}
                   label="Website"
                   variant="outlined"
                   value={password.website}
@@ -77,7 +77,7 @@ function Passwords() {
                   }}
                 />
                 <TextField
-                  id={'username'+password.id}
+                  id={'username' + password.id}
                   label="Username/Email"
                   variant="outlined"
                   value={password.username}
@@ -87,7 +87,7 @@ function Passwords() {
                   }}
                 />
                 <TextField
-                  id={'description'+password.id}
+                  id={'description' + password.id}
                   label="description"
                   variant="outlined"
                   value={password.description}
@@ -97,7 +97,7 @@ function Passwords() {
                   }}
                 />
                 <TextField
-                  id={'password'+password.id}
+                  id={'password' + password.id}
                   label="Password"
                   variant="outlined"
                   type="password"
