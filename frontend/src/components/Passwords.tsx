@@ -1,4 +1,3 @@
-// import { Password } from '@mui/icons-material';
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Box, List, ListItem, ListItemButton, TextField } from "@mui/material";
 import { useState } from "react";
@@ -15,7 +14,6 @@ function Passwords() {
       username: "examplesuer",
       password: "examplepw",
       description: "this is a example",
-      // user: ,
     },
     {
       id: 2,
@@ -24,7 +22,6 @@ function Passwords() {
       username: "asdfasdf",
       password: "sdfadfg",
       description: "this is a example",
-      // user: ,
     },
   ]);
 
@@ -32,10 +29,9 @@ function Passwords() {
 
   const handleChange = (
     password: Password,
-    e: React.ChangeEvent<HTMLInputElement>
   ) => {
     const pw: Password = passwords.filter(
-      (password) => (password = password)
+      (password1) => (password1 = password)
     )[0];
     passwords.splice(passwords.indexOf(pw));
     setPasswords([...passwords, pw]);
@@ -77,7 +73,7 @@ function Passwords() {
                   value={password.website}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     password.website = e.target.value;
-                    handleChange(password, e);
+                    handleChange(password);
                   }}
                 />
                 <TextField
@@ -87,7 +83,7 @@ function Passwords() {
                   value={password.username}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     password.username = e.target.value;
-                    handleChange(password, e);
+                    handleChange(password);
                   }}
                 />
                 <TextField
@@ -97,7 +93,7 @@ function Passwords() {
                   value={password.description}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     password.description = e.target.value;
-                    handleChange(password, e);
+                    handleChange(password);
                   }}
                 />
                 <TextField
@@ -108,7 +104,7 @@ function Passwords() {
                   value={password.password}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     password.password = e.target.value;
-                    handleChange(password, e);
+                    handleChange(password);
                   }}
                 />
                 <ListItemButton>
