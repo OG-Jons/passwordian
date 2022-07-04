@@ -24,7 +24,11 @@ export class User extends BaseEntity {
   @Column()
   masterPassword: string;
 
-  @OneToMany(() => Password, (password) => password.user, { eager: true })
+  @OneToMany(() => Password, (password) => password.user, {
+    eager: true,
+    cascade: true,
+    onUpdate: 'CASCADE',
+  })
   passwords: Password[];
 
   @OneToMany(() => Category, (category) => category.user, { eager: true })
