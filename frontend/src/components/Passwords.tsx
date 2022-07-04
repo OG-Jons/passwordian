@@ -1,4 +1,5 @@
 import DeleteIcon from "@mui/icons-material/Delete";
+import SaveIcon from "@mui/icons-material/Save";
 import { Box, List, ListItem, ListItemButton, TextField } from "@mui/material";
 import { useState } from "react";
 import { Navigate } from "react-router-dom";
@@ -36,10 +37,9 @@ function Passwords() {
     newPasswords[passwords.indexOf(oldPassword)] = newPassword;
 
     setPasswords(newPasswords);
-    updatePasswordsOnServer();
   };
 
-  const updatePasswordsOnServer = () => {
+  const updatePasswordsOnServer = (password: Password) => {
     //TODO
   };
 
@@ -107,6 +107,9 @@ function Passwords() {
                     handleChange(password);
                   }}
                 />
+                <ListItemButton onClick={() => updatePasswordsOnServer(password)}>
+                  <SaveIcon />
+                </ListItemButton>
                 <ListItemButton>
                   <DeleteIcon />
                 </ListItemButton>
