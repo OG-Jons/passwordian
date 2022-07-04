@@ -63,7 +63,7 @@ function Passwords() {
                   value={password.title}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     password.title = e.target.value;
-                    setTimeout(() => handleChange(password, e), 0);
+                    handleChange(password);
                   }}
                 ></TextField>
                 <TextField
