@@ -32,7 +32,7 @@ function Passwords() {
       (oldPassword1) => (oldPassword1.id === newPassword.id)
     )[0];
 
-    var newPasswords = [...passwords];
+    let newPasswords = [...passwords];
     newPasswords[passwords.indexOf(oldPassword)] = newPassword;
 
     setPasswords(newPasswords);
