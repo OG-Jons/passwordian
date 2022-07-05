@@ -13,6 +13,7 @@ export interface Password {
   username?: string;
   password?: string;
   description?: string;
+  category?:Category;
   user?: User;
 }
 
