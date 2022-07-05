@@ -12,12 +12,16 @@ export const getUserPasswords = async (): Promise<Password[]> => {
 };
 
 /**
- * 
+ *
  * @param category if called with null returns all passwords without a category
- * @returns 
+ * @returns
  */
-export const getUserPasswordsByCategory = async (category: Category | null): Promise<Password[]> => {
-  return http.get("/passwords").then(extract);//TODO
+export const getUserPasswordsByCategory = async (
+  category: Category | null
+): Promise<Password[]> => {
+  return http
+    .get(`/passwords/category/${category?.id ? category.id : -1}`)
+    .then(extract);
 };
 
 export const getPassword = async (id: number): Promise<Password> => {

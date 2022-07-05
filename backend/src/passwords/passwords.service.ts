@@ -23,12 +23,14 @@ export class PasswordsService {
     createPasswordDto: CreatePasswordDto,
     user: User,
   ): Promise<Password> {
-    const category = await this.categoryService.findOne(
-      createPasswordDto.categoryId,
-    );
-
     let newPassword = new Password();
-    newPassword.category = category;
+
+    if (createPasswordDto.categoryId) {
+      newPassword.category = await this.categoryService.findOne(
+        createPasswordDto.categoryId,
+      );
+    }
+
     newPassword.user = user;
     newPassword = { ...newPassword, ...createPasswordDto };
 
@@ -40,7 +42,6 @@ export class PasswordsService {
 
   async findAllFromUser(user: User): Promise<Password[]> {
     return await this.passwordRepository.findBy({
-      username: user.username,
       user: { id: user.id },
     });
   }
@@ -55,6 +56,43 @@ export class PasswordsService {
     }
 
     return password;
+  }
+
+  async findAllFromCategory(
+    categoryID: number | null,
+    user: User,
+  ): Promise<Password[]> {
+    if (categoryID && categoryID > 0) {
+      const category = await this.categoryService.findOne(categoryID);
+      if (!category) {
+        throw new NotFoundException('Category not found');
+      }
+
+      if (
+        !(await this.checkIfUserHasPassword(user.id, categoryID)) &&
+        !(await this.categoryService.checkIfUserHasCategory(
+          user.id,
+          categoryID,
+        ))
+      ) {
+        throw new ForbiddenException('This is not your category or password');
+      }
+
+      return await this.passwordRepository.findBy({
+        category: { id: categoryID },
+        user: { id: user.id },
+      });
+    } else {
+      return await this.passwordRepository
+        .findBy({
+          user: { id: user.id },
+        })
+        .then((passwords) => {
+          return passwords.filter((password) => {
+            return !password.category;
+          });
+        });
+    }
   }
 
   async update(

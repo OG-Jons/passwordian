@@ -46,6 +46,14 @@ export class PasswordsController {
     return this.passwordsService.findOne(+id, user);
   }
 
+  @Get('/category/:id')
+  findAllFromCategory(
+    @Param('id') id: string,
+    @GetUser() user: User,
+  ): Promise<Password[]> {
+    return this.passwordsService.findAllFromCategory(+id, user);
+  }
+
   @Patch(':id')
   update(
     @Param('id') id: string,
