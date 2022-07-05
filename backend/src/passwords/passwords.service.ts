@@ -10,6 +10,7 @@ import { Password } from './entities/password.entity';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { User } from '../auth/user.entity';
 import { CategoriesService } from '../categories/categories.service';
+import { EncryptionService } from '../encryption/encryption.service';
 
 @Injectable()
 export class PasswordsService {
@@ -17,18 +18,21 @@ export class PasswordsService {
     @InjectRepository(Password)
     private passwordRepository: Repository<Password>,
     private categoryService: CategoriesService,
+    private encryptionService: EncryptionService,
   ) {}
 
   async create(
     createPasswordDto: CreatePasswordDto,
     user: User,
   ): Promise<Password> {
-    const category = await this.categoryService.findOne(
-      createPasswordDto.categoryId,
-    );
-
     let newPassword = new Password();
-    newPassword.category = category;
+
+    if (createPasswordDto.categoryId) {
+      newPassword.category = await this.categoryService.findOne(
+        createPasswordDto.categoryId,
+      );
+    }
+
     newPassword.user = user;
     newPassword = { ...newPassword, ...createPasswordDto };
 
@@ -52,6 +56,14 @@ export class PasswordsService {
     if (!password) {
       throw new NotFoundException('Password not found');
     }
+
+    console.log(
+      await this.encryptionService.decryptPassword(
+        password.password,
+        user.key,
+        user.iv,
+      ),
+    );
 
     return password;
   }

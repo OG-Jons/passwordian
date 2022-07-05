@@ -13,6 +13,7 @@ import { User } from './user.entity';
 import { createCipheriv, createDecipheriv, scrypt } from 'crypto';
 import { promisify } from 'util';
 import { Password } from '../passwords/entities/password.entity';
+import { EncryptionService } from '../encryption/encryption.service';
 
 @Injectable()
 export class AuthService {
@@ -20,6 +21,7 @@ export class AuthService {
     private jwtService: JwtService,
     private userService: UserService,
     private passwordService: PasswordsService,
+    private encryptionService: EncryptionService,
   ) {}
 
   async signUp(authCredentialsDto: AuthCredentialsDto): Promise<void> {
@@ -57,19 +59,18 @@ export class AuthService {
     const updated = await this.userService.updateMasterPassword(
       updatePasswordDto,
     );
-    console.log(updated);
 
     if (!updated) {
       throw new UnauthorizedException('Invalid credentials');
     }
-
+    user.masterPassword = updated.masterPassword;
     const passwords = await this.passwordService.findAllFromUser(user);
 
     const unhashedPasswords = await Promise.all(
       passwords.map(async (password): Promise<Password> => {
         return {
           ...password,
-          password: await this.decryptPassword(
+          password: await this.encryptionService.decryptPassword(
             password.password,
             user.key,
             user.iv,
@@ -94,7 +95,7 @@ export class AuthService {
       unhashedPasswords.map(async (password): Promise<Password> => {
         return {
           ...password,
-          password: await this.encryptPassword(
+          password: await this.encryptionService.encryptPassword(
             password.password,
             user.key,
             user.iv,
@@ -113,33 +114,4 @@ export class AuthService {
     const accessToken = this.jwtService.sign(payload);
     return { accessToken };
   }
-
-  async encryptPassword(
-    textToEncrypt: string,
-    key: Buffer,
-    iv: Buffer,
-  ): Promise<string> {
-    const cipher = createCipheriv('aes-256-ctr', key, iv);
-
-    const encryptedText = Buffer.concat([
-      cipher.update(textToEncrypt),
-      cipher.final(),
-    ]);
-    return encryptedText.toString('base64');
-  }
-
-  decryptPassword = async (
-    encryptedText: string,
-    key: Buffer,
-    iv: Buffer,
-  ): Promise<string> => {
-    // Convert encryptedText to buffer
-    const encryptedTextBuffer = Buffer.from(encryptedText, 'base64');
-    const decipher = createDecipheriv('aes-256-ctr', key, iv);
-    const decryptedText = Buffer.concat([
-      decipher.update(encryptedTextBuffer),
-      decipher.final(),
-    ]);
-    return decryptedText.toString('base64');
-  };
 }

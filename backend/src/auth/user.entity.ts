@@ -24,21 +24,23 @@ export class User extends BaseEntity {
   @Column()
   masterPassword: string;
 
-  @OneToMany(() => Password, (password) => password.user, {
-    eager: true,
-    cascade: true,
-    onUpdate: 'CASCADE',
-  })
-  passwords: Password[];
-
-  @OneToMany(() => Category, (category) => category.user, { eager: true })
-  categories: Category[];
-
   @Column({ nullable: true })
   iv: Buffer;
 
   @Column({ nullable: true })
   key: Buffer;
+
+  @OneToMany(() => Password, (password) => password.user, {
+    eager: true,
+    cascade: true,
+  })
+  passwords: Password[];
+
+  @OneToMany(() => Category, (category) => category.user, {
+    eager: true,
+    cascade: true,
+  })
+  categories: Category[];
 
   async validatePassword(password: string): Promise<boolean> {
     return await bcrypt.compare(password, this.masterPassword);

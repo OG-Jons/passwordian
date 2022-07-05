@@ -6,7 +6,7 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, UpdateResult } from 'typeorm';
 import { EncryptionService } from 'src/encryption/encryption.service';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 import { randomBytes, scrypt } from 'crypto';
@@ -56,7 +56,7 @@ export class UserService {
 
   async updateMasterPassword(
     updatePasswordDto: UpdatePasswordDto,
-  ): Promise<boolean> {
+  ): Promise<User> {
     const { username, password, newPassword } = updatePasswordDto;
     const user = await this.userRepository.findOne({ where: { username } });
 
@@ -64,10 +64,11 @@ export class UserService {
       user.masterPassword = await this.encryptionService.encryptWithSalt(
         newPassword,
       );
-      await this.userRepository.softDelete(user.id);
-      await this.userRepository.save(user);
-      return true;
+
+      console.log('Updated: ', user.masterPassword);
+
+      return await user.save();
     }
-    return false;
+    return null;
   }
 }
