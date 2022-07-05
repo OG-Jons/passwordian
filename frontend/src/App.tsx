@@ -1,7 +1,8 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import "./App.scss";
-import Login from "./Login";
-import Passwords from "./Passwords";
+import Login from "./components/Login";
+import Passwords from "./components/Passwords";
+import { isAuthenticated } from "./services/AuthService";
 
 function App() {
   return (
@@ -10,25 +11,15 @@ function App() {
       <Routes>
         <Route
           path="/"
-          element={<AuthWrapper isAuthenticated={true} />}
-          // element={isAuthenticated(true)}
+          element={<AuthWrapper isAuthenticated={isAuthenticated()} />}
         />
-        <Route path="/passwords" element={<Passwords />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/passwords" element={<Passwords />} />)
+        <Route path="*" element={<p>404: Site not found</p>} />
       </Routes>
-      {/* <header className="App-header">
-      </header> */}
     </div>
   );
 }
-
-// const isAuthenticated = (isAuthenticated: boolean) => {
-//   if(isAuthenticated){
-//     return <Passwords />
-//   } else {
-//     return <Login/>
-//   }
-// }
 
 const AuthWrapper = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
   if (isAuthenticated) {
