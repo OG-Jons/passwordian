@@ -3,7 +3,8 @@ import SaveIcon from "@mui/icons-material/Save";
 import { Box, List, ListItem, ListItemButton, TextField } from "@mui/material";
 import { useState } from "react";
 import { Navigate } from "react-router-dom";
-import { isAuthenticated, getUserCategories, getUserPasswordsByCategory } from "../services/AuthService";
+import { isAuthenticated } from "../services/AuthService";
+import { getUserCategories, getUserPasswordsByCategory } from "../services/APIService";
 import { Category, Password } from "../types";
 
 function Passwords() {
