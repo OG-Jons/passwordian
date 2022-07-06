@@ -15,7 +15,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { isAuthenticated } from "../services/AuthService";
-import { deleteUserCategory, getUserCategories } from "../services/APIService";
+import { deleteUserCategory, deleteUserPassword, getUserCategories } from "../services/APIService";
 import { Category, Password } from "../types";
 
 function Passwords() {
@@ -36,12 +36,19 @@ function Passwords() {
     );
   };
 
-  const deletePassword = (id: number) => {
-    deleteUserCategory(id).then(() =>
+  const deletePassword = (password: Password) => {
+    let categoryId: number;
+    if(password.category === undefined ){
+      categoryId = -1;
+    } else{
+      categoryId= password.category.id; 
+    }
+
+    deleteUserPassword(password.id).then(() =>
       setCategories(
         categories.map((c) => {
-          if (c.id === id) {
-            c.passwords = c.passwords.filter((p) => p.id !== id);
+          if (c.id === categoryId) {
+            c.passwords = c.passwords.filter((p) => p.id !== password.id);
           }
           return c;
         })
@@ -157,7 +164,7 @@ function Passwords() {
                             <ListItemButton
                               className="passwordButton"
                               onClick={() =>
-                                deletePassword(Number(password.id))
+                                deletePassword(password)
                               }
                             >
                               <DeleteIcon />

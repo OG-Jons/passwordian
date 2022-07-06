@@ -42,7 +42,7 @@ export const updateUserPassword = async (
   id: number,
   password: Password
 ): Promise<Password> => {
-  return http.put(`/passwords/${id}`, { ...password }).then(extract);
+  return http.patch(`/passwords/${id}`, { ...password }).then(extract);
 };
 
 /* Auth section */

@@ -1,6 +1,6 @@
 import { Box, Button, Tab, Tabs, TextField } from "@mui/material";
 import { SyntheticEvent, useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { login } from "../services/APIService";
 import { isAuthenticated, signup } from "../services/AuthService";
 
@@ -8,6 +8,8 @@ function Login() {
   const [tabValue, setTabValue] = useState(0);
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+
+  const navigate = useNavigate();
 
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value);
@@ -31,9 +33,9 @@ function Login() {
 
   const buttonOnClick = () => {
     if (tabValue === 0) {
-      login(username, password);
+      login(username, password).then(()=>setTimeout(()=>navigate("/"),500));
     } else {
-      signup(username, password);
+      signup(username, password).then(()=>setTimeout(()=>navigate("/"),500));
     }
   };
 

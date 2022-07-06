@@ -38,7 +38,6 @@ export const signup = async (
 };
 
 export const isAuthenticated = (): boolean => {
-  return true;
-  // const token = Cookies.get("token");
-  // return !!token;
+  const token = Cookies.get("token");
+  return !!token;
 };
