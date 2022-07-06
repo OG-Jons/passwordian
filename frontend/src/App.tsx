@@ -34,7 +34,6 @@ const AuthWrapper = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
 
 const Header = () => {
   const location = useLocation();
-  console.log(location);
   if (location.pathname === "/") return <></>;
   else return <p className="App-header">Passwordian</p>;
 };
