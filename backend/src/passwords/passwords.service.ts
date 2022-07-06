@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ForbiddenException,
   Injectable,
   NotFoundException,
@@ -81,6 +82,25 @@ export class PasswordsService {
     }
 
     return await this.passwordRepository.delete(id);
+  }
+
+  async updatePasswords(
+    passwords: UpdatePasswordDto[],
+    user: User,
+  ): Promise<(UpdatePasswordDto & Password)[]> {
+    for (const password of passwords) {
+      if (!password.id) {
+        throw new BadRequestException('Password ID is required');
+      }
+      if (!(await this.checkIfPasswordExists(password.id))) {
+        throw new NotFoundException('Category not found');
+      }
+      if (await this.checkIfUserHasPassword(user.id, password.id)) {
+        throw new ForbiddenException('This is not your category');
+      }
+    }
+
+    return this.passwordRepository.save(passwords);
   }
 
   async checkIfPasswordExists(id: number): Promise<boolean> {
