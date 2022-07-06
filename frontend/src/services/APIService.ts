@@ -61,9 +61,14 @@ export const register = async (
   return http.post("/auth/signup", { username, password }).then(extract);
 };
 
-export const updateMasterPassword = async (password: string): Promise<null> => {
-  throw new Error("Method not implemented.");
-  //return http.put("/auth/master", { password }).then(extract);
+export const updateMasterPassword = async (
+  username: string,
+  password: string,
+  newPassword: string
+): Promise<null> => {
+  return http
+    .put("/auth/master", { username, password, newPassword })
+    .then(extract);
 };
 
 /* Category section */

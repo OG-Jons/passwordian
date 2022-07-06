@@ -6,18 +6,14 @@ import { isAuthenticated, signup } from "../services/AuthService";
 
 function Login() {
   const [tabValue, setTabValue] = useState(0);
-  const [username, setUsername] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
-  const handleUsernameChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value);
   };
 
-  const handlePasswordChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
   };
 
@@ -27,11 +23,11 @@ function Login() {
 
   const getButtonLabel = () => {
     if (tabValue === 0) {
-      return 'Login';
+      return "Login";
     } else {
-      return 'Signup';
+      return "Signup";
     }
-  }
+  };
 
   const buttonOnClick = () => {
     if (tabValue === 0) {
@@ -39,21 +35,23 @@ function Login() {
     } else {
       signup(username, password);
     }
-  }
+  };
 
   if (isAuthenticated()) {
     return <Navigate to="/passwords" replace />;
   } else {
     return (
-      <Box sx={{ width: '100%' }}
+      <Box
+        sx={{ width: "100%" }}
         style={{
           marginTop: 10,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           flexDirection: "column",
-        }}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        }}
+      >
+        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <Tabs value={tabValue} onChange={handleChange}>
             <Tab label="Login" />
             <Tab label="Signup" />
@@ -64,6 +62,7 @@ function Login() {
           id="username"
           label="Username"
           variant="outlined"
+          value={username}
           onChange={handleUsernameChange}
         />
         <TextField
@@ -71,9 +70,16 @@ function Login() {
           id="password"
           label="Password"
           type="password"
+          value={password}
           onChange={handlePasswordChange}
         />
-        <Button style={{ margin: 5 }} onClick={buttonOnClick} variant="outlined">{getButtonLabel()}</Button>
+        <Button
+          style={{ margin: 5 }}
+          onClick={buttonOnClick}
+          variant="outlined"
+        >
+          {getButtonLabel()}
+        </Button>
       </Box>
     );
   }

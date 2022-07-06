@@ -1,5 +1,7 @@
 import {
   ForbiddenException,
+  forwardRef,
+  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -16,9 +18,9 @@ export class PasswordsService {
   constructor(
     @InjectRepository(Password)
     private passwordRepository: Repository<Password>,
+    @Inject(forwardRef(() => CategoriesService))
     private categoryService: CategoriesService,
   ) {}
-
   async create(
     createPasswordDto: CreatePasswordDto,
     user: User,

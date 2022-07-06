@@ -13,7 +13,7 @@ export interface Password {
   username?: string;
   password?: string;
   description?: string;
-  category?:Category;
+  category?: Category;
   user?: User;
 }
 
@@ -21,5 +21,5 @@ export interface Category {
   id?: number;
   name?: string;
   user?: User;
-  passwords?: Password[];
+  passwords: Password[];
 }
