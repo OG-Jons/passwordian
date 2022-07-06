@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ForbiddenException,
   forwardRef,
   Inject,
@@ -26,13 +27,11 @@ export class PasswordsService {
     user: User,
   ): Promise<Password> {
     let newPassword = new Password();
-
     if (createPasswordDto.categoryId) {
       newPassword.category = await this.categoryService.findOne(
         createPasswordDto.categoryId,
       );
     }
-
     newPassword.user = user;
     newPassword = { ...newPassword, ...createPasswordDto };
 
@@ -103,10 +102,10 @@ export class PasswordsService {
     user: User,
   ): Promise<UpdateResult> {
     if (!(await this.checkIfPasswordExists(id))) {
-      throw new NotFoundException('Category not found');
+      throw new NotFoundException('Password not found');
     }
-    if (await this.checkIfUserHasPassword(user.id, id)) {
-      throw new ForbiddenException('This is not your category');
+    if (!(await this.checkIfUserHasPassword(user.id, id))) {
+      throw new ForbiddenException('This is not your password');
     }
 
     return await this.passwordRepository.update(id, updatePasswordDto);
@@ -114,13 +113,36 @@ export class PasswordsService {
 
   async remove(id: number, user: User): Promise<DeleteResult> {
     if (!(await this.checkIfPasswordExists(id))) {
-      throw new NotFoundException('Category not found');
+      throw new NotFoundException('Password not found');
     }
-    if (await this.checkIfUserHasPassword(user.id, id)) {
-      throw new ForbiddenException('This is not your category');
+    if (!(await this.checkIfUserHasPassword(user.id, id))) {
+      throw new ForbiddenException('This is not your password');
     }
 
     return await this.passwordRepository.delete(id);
+  }
+
+  async updatePasswords(
+    passwords: UpdatePasswordDto[],
+    user: User,
+  ): Promise<(UpdatePasswordDto & Password)[]> {
+    for (const password of passwords) {
+      if (!password.id) {
+        throw new BadRequestException('Password ID is required');
+      }
+      if (!(await this.checkIfPasswordExists(password.id))) {
+        throw new NotFoundException(
+          `Password with id #${password.id} not found`,
+        );
+      }
+      if (!(await this.checkIfUserHasPassword(user.id, password.id))) {
+        throw new ForbiddenException(
+          'This is not your password: ' + password.id,
+        );
+      }
+    }
+
+    return this.passwordRepository.save(passwords);
   }
 
   async checkIfPasswordExists(id: number): Promise<boolean> {
