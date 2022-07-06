@@ -4,11 +4,12 @@ import Login from "./components/Login";
 import Passwords from "./components/Passwords";
 import LandingPage from "./components/LandingPage";
 import { isAuthenticated } from "./services/AuthService";
+import { useLocation } from "react-router-dom";
 
 function App() {
   return (
     <div className="App">
-      <p className="App-header">Passwordian</p>
+      <Header />
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route
@@ -29,6 +30,13 @@ const AuthWrapper = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
   } else {
     return <Navigate to="/login" replace />;
   }
+};
+
+const Header = () => {
+  const location = useLocation();
+  console.log(location);
+  if (location.pathname === "/") return <></>;
+  else return <p className="App-header">Passwordian</p>;
 };
 
 export default App;
