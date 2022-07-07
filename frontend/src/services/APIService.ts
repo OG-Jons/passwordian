@@ -95,5 +95,5 @@ export const updateUserCategory = async (
   id: number,
   category: Category
 ): Promise<Category> => {
-  return http.put(`/categories/${id}`, { ...category }).then(extract);
+  return http.patch(`/categories/${id}`, { id:category.id, name:category.name }).then(extract);
 };
