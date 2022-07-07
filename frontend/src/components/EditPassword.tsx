@@ -1,21 +1,28 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { Password } from "../types";
+import { Category, Password } from "../types";
 import React, { useEffect, useState } from "react";
 import {
   Button,
+  FormControl,
+  InputLabel,
   List,
   ListItem,
   ListItemButton,
+  MenuItem,
+  Select,
   TextField,
 } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { getPassword, updateUserPassword } from "../services/APIService";
+import { getPassword, getUserCategories, updateUserPassword } from "../services/APIService";
 
 function EditPassword() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [password, setPassword] = useState<Password>();
+  const [categoryId, setCategoryId] = useState<number>(-1);
+  const [categories, setCategories] = useState<Category[]>([{ id: -1, name: "No category" } as Category]);
+
 
   useEffect(() => {
     async function getData() {
@@ -25,6 +32,8 @@ function EditPassword() {
       } else {
         alert("Invalid category id");
       }
+      const response1 = await getUserCategories();
+      setCategories(response1);
     }
 
     getData().then((r) => r);
@@ -32,9 +41,20 @@ function EditPassword() {
 
   const handleSave = async () => {
     if (id && password) {
-      updateUserPassword(+id, password).then(() => navigate("/passwords"));
+      let passwordToSave: Password = password;
+      if (password.id === -1) {
+        passwordToSave = { ...password, category: undefined };
+      }
+
+      updateUserPassword(+id, passwordToSave).then(() => navigate("/passwords"));
     }
   };
+
+  const updateCategory = (id: number) => {
+    setCategoryId(id);
+    const category: Category = categories.filter((category: Category) => category.id === id)[0];
+    setPassword({ ...password, category: category } as Password)
+  }
 
   return (
     <>
@@ -91,6 +111,22 @@ function EditPassword() {
                 setPassword({ ...password, password: e.target.value })
               }
             />
+            <FormControl className="passwordSelect">
+              <InputLabel id="category-label">Category</InputLabel>
+              <Select
+                labelId="category-label"
+                id="category"
+                value={categoryId}
+                label="Category"
+                onChange={(e) => {
+                  updateCategory(e.target.value as number)
+                }}
+              >
+                {categories.map((category: Category) => {
+                  return <MenuItem value={category.id}>{category.name}</MenuItem>
+                })}
+              </Select>
+            </FormControl>
             <ListItemButton className="passwordButton" onClick={handleSave}>
               <SaveIcon />
             </ListItemButton>
