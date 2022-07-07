@@ -108,7 +108,7 @@ function CreatePassword() {
               value={categoryId}
               label="Category"
               onChange={(e) => {
-                updateCategory(e.target.value)
+                updateCategory(e.target.value as number);
               }}
             >
               {categories.map((category:Category) => {
