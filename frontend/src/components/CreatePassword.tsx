@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Category, Password } from "../types";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Button,
   FormControl,
@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { createUserPassword, getCategory, getUserCategories } from "../services/APIService";
+import { createUserPassword, getUserCategories } from "../services/APIService";
 
 function CreatePassword() {
   const navigate = useNavigate();
