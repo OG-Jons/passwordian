@@ -17,7 +17,6 @@ export const login = async (
 
   if (accessToken) {
     await Cookies.set("token", accessToken);
-    // TODO: Save User to React Context
     // TODO: Redirect to password overview
   }
   return accessToken;
