@@ -1,8 +1,7 @@
 import { Box, Button, Tab, Tabs, TextField } from "@mui/material";
 import { SyntheticEvent, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
-import { login } from "../services/APIService";
-import { isAuthenticated, signup } from "../services/AuthService";
+import { isAuthenticated, signup, login } from "../services/AuthService";
 
 function Login() {
   const [tabValue, setTabValue] = useState(0);
