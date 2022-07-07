@@ -1,5 +1,6 @@
 import http from "./http";
 import Cookies from "js-cookie";
+import { JwtPayload } from "../types";
 
 export const login = async (
   username: string,
@@ -38,6 +39,21 @@ export const signup = async (
 };
 
 export const isAuthenticated = (): boolean => {
-  const token = Cookies.get("token");
-  return !!token;
+  const token: string | undefined = Cookies.get("token");
+  if (token) {   
+    if (parseJwt(token).exp * 1000 < new Date().getTime()) {
+      Cookies.remove("token");
+      return false;
+    } else {
+      return true;
+    }
+  } else {
+    return false;
+  }
+};
+
+const parseJwt = function (token: String): JwtPayload {
+  var base64Url = token.split(".")[1];
+  var base64 = base64Url.replace("-", "+").replace("_", "/");
+  return JSON.parse(atob(base64));
 };

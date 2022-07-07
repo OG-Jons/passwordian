@@ -23,3 +23,9 @@ export interface Category {
   user?: User;
   passwords: Password[];
 }
+
+export interface JwtPayload {
+  username: string;
+  iat: number;
+  exp: number;
+}
