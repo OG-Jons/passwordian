@@ -52,8 +52,8 @@ export const isAuthenticated = (): boolean => {
   }
 };
 
-const parseJwt = function (token: String): JwtPayload {
-  var base64Url = token.split(".")[1];
-  var base64 = base64Url.replace("-", "+").replace("_", "/");
+const parseJwt = function (token: string): JwtPayload {
+  let base64Url = token.split(".")[1];
+  let base64 = base64Url.replace("-", "+").replace("_", "/");
   return JSON.parse(atob(base64));
 };
