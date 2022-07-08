@@ -22,7 +22,7 @@ const encyptPassword = (password: Password, masterPassword: string): Password =>
   return password;
 };
 
-export const getDecryptedUserCategories = async (masterPassword: string): Promise<Category[]>{
+export const getDecryptedUserCategories = async (masterPassword: string): Promise<Category[]> => {
   const categories: Category[] = await getUserCategories();
   return categories.map((category: Category) => {
     category.passwords = category.passwords.map((password: Password) => decyptPassword(password, masterPassword))
