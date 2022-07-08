@@ -16,7 +16,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { getPassword, getUserCategories, updateUserPassword } from "../services/APIService";
 
-function EditPassword() {
+function EditPassword(props : {masterPassword : String}) {
   const { id } = useParams();
   const navigate = useNavigate();
   const [password, setPassword] = useState<Password>();

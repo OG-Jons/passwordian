@@ -3,7 +3,7 @@ import { SyntheticEvent, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { isAuthenticated, signup, login } from "../services/AuthService";
 
-function Login() {
+function Login(props: {setMasterPassword: (masterPassword : string) => void}) {
   const [tabValue, setTabValue] = useState(0);
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -32,9 +32,11 @@ function Login() {
 
   const buttonOnClick = () => {
     if (tabValue === 0) {
-      login(username, password).then(()=>setTimeout(()=>navigate("/passwords"),500));
+      login(username, password)//.then(()=>setTimeout(()=>navigate("/passwords"),500));
+      props.setMasterPassword(password);
     } else {
-      signup(username, password).then(()=>setTimeout(()=>navigate("/passwords"),500));
+      signup(username, password)//.then(()=>setTimeout(()=>navigate("/passwords"),500));
+      props.setMasterPassword(password);
     }
   };
 

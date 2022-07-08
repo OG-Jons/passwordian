@@ -15,20 +15,21 @@ import {
 import SaveIcon from "@mui/icons-material/Save";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { createUserPassword, getUserCategories } from "../services/APIService";
+import { getDecryptedUserCategories } from "../services/EncryptionService";
 
-function CreatePassword() {
+function CreatePassword(props : {masterPassword : String}) {
   const navigate = useNavigate();
   const [password, setPassword] = useState<Password>({} as Password);
   const [categoryId, setCategoryId] = useState<number>(-1);
   const [categories, setCategories] = useState<Category[]>([{id:-1, name: "No category"} as Category]);
 
   useEffect(() => {
-    async function getData() {
-      const response = await getUserCategories();
-      setCategories(response);
-    }
+    // async function getData() {
+    //   const response = await getDecryptedUserCategories(masterPassword)
+    //   setCategories(response);
+    // }
 
-    getData().then((r) => r);
+    // getData().then((r) => r);
   }, []);
 
   const handleSave = async () => {

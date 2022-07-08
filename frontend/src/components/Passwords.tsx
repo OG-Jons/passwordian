@@ -18,7 +18,7 @@ import { isAuthenticated } from "../services/AuthService";
 import { deleteUserCategory, deleteUserPassword, getUserCategories } from "../services/APIService";
 import { Category, Password } from "../types";
 
-function Passwords() {
+function Passwords(props : {masterPassword : String}) {
   const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
