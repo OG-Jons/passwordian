@@ -33,15 +33,15 @@ export default function LandingPage() {
 
       <h1>What is passwordian?</h1>
       <div>
-        <AnimationOnScroll
+        {/* <AnimationOnScroll
           animateIn="animate__shakeY"
           animateOut="animate__bounceOutRight"
-        >
+        > */}
           <p>
             Passwordian is a very basic password manager. It is a simple web
             application that allows you to store your passwords in a secure way.
           </p>
-        </AnimationOnScroll>
+        {/* </AnimationOnScroll> */}
         <h2>Try out passwordian now!</h2>
         <AnimationOnScroll animateIn="animate__bounceIn">
           <Button variant="contained" href="/app" color="success" size="large">
