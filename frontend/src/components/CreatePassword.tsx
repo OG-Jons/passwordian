@@ -17,7 +17,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { createUserPassword, getUserCategories } from "../services/APIService";
 import { getDecryptedUserCategories } from "../services/EncryptionService";
 
-function CreatePassword(props : {masterPassword : String}) {
+function CreatePassword(props : {masterPassword : string}) {
   const navigate = useNavigate();
   const [password, setPassword] = useState<Password>({} as Password);
   const [categoryId, setCategoryId] = useState<number>(-1);
