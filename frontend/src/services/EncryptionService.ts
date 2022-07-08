@@ -22,7 +22,7 @@ const encyptPassword = (password: Password, masterPassword: string): Password =>
   return password;
 };
 
-const getDecryptedUserCategories = async (masterPassword: string): Promise<Category[]>{
+export const getDecryptedUserCategories = async (masterPassword: string): Promise<Category[]>{
   const categories: Category[] = await getUserCategories();
   return categories.map((category: Category) => {
     category.passwords = category.passwords.map((password: Password) => decyptPassword(password, masterPassword))
@@ -30,15 +30,15 @@ const getDecryptedUserCategories = async (masterPassword: string): Promise<Categ
   })
 }
 
-const getDecryptedPassword = async (id: number, masterPassword: string)=>{
+export const getDecryptedPassword = async (id: number, masterPassword: string)=>{
   const password: Password = await getPassword(id);
   return decyptPassword(password, masterPassword);
 }
 
-const updateUserPasswordAndEncrypt = async (id: number, password: Password, masterPassword: string)=>{
+export const updateUserPasswordAndEncrypt = async (id: number, password: Password, masterPassword: string)=>{
   return updateUserPassword(id, encyptPassword(password, masterPassword))
 }
 
-const createEncryptedUserPassword = async (id: number, password: Password, masterPassword: string)=>{
+export const createEncryptedUserPassword = async (id: number, password: Password, masterPassword: string)=>{
   return createUserPassword(encyptPassword(password, masterPassword));
 }
