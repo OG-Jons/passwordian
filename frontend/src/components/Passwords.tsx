@@ -77,6 +77,7 @@ function Passwords() {
         <Button
           href="/new-category"
           variant="outlined"
+          disabled={true}
           style={{ color: "black", marginTop: "25px" }}
         >
           New Category
