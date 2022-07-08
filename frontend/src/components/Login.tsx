@@ -32,10 +32,10 @@ function Login(props: {setMasterPassword: (masterPassword : string) => void}) {
 
   const buttonOnClick = () => {
     if (tabValue === 0) {
-      login(username, password)//.then(()=>setTimeout(()=>navigate("/passwords"),500));
+      login(username, password).then(()=>setTimeout(()=>navigate("/passwords"),500));
       props.setMasterPassword(password);
     } else {
-      signup(username, password)//.then(()=>setTimeout(()=>navigate("/passwords"),500));
+      signup(username, password).then(()=>setTimeout(()=>navigate("/passwords"),500));
       props.setMasterPassword(password);
     }
   };
