@@ -7,18 +7,25 @@ export interface User {
 }
 
 export interface Password {
-  id?: number;
+  id: number;
   title?: string;
   website?: string;
   username?: string;
   password?: string;
   description?: string;
+  category?: Category;
   user?: User;
 }
 
 export interface Category {
-  id?: number;
+  id: number;
   name?: string;
   user?: User;
-  passwords?: Password[];
+  passwords: Password[];
+}
+
+export interface JwtPayload {
+  username: string;
+  iat: number;
+  exp: number;
 }

@@ -19,6 +19,7 @@ export class Category {
 
   @OneToMany(() => Password, (password) => password.category, {
     onDelete: 'SET NULL',
+    eager: true,
   })
   passwords: Password[];
 

@@ -1,5 +1,7 @@
 import {
   ForbiddenException,
+  forwardRef,
+  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -9,12 +11,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { Category } from './entities/category.entity';
 import { User } from '../auth/user.entity';
+import { PasswordsService } from '../passwords/passwords.service';
 
 @Injectable()
 export class CategoriesService {
   constructor(
     @InjectRepository(Category)
     private readonly categoryRepository: Repository<Category>,
+    @Inject(forwardRef(() => PasswordsService))
+    private readonly passwordService: PasswordsService,
   ) {}
 
   create(createCategoryDto: CreateCategoryDto, user: User): Promise<Category> {
@@ -23,14 +28,27 @@ export class CategoriesService {
     );
   }
 
-  findAllOfUser(userID: number): Promise<Category[]> {
-    return this.categoryRepository.find({
+  async findAllOfUser(user: User): Promise<Category[]> {
+    const categories = await this.categoryRepository.find({
       where: {
         user: {
-          id: userID,
+          id: user.id,
         },
       },
     });
+    const noCategoryPasswords = await this.passwordService.findAllFromCategory(
+      -1,
+      user,
+    );
+
+    categories.push({
+      id: -1,
+      name: 'No category',
+      user: null,
+      passwords: noCategoryPasswords,
+    });
+
+    return categories;
   }
 
   async findOne(id: number): Promise<Category> {
