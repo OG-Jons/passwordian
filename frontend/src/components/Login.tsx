@@ -32,9 +32,9 @@ function Login() {
 
   const buttonOnClick = () => {
     if (tabValue === 0) {
-      login(username, password).then(()=>setTimeout(()=>navigate("/"),500));
+      login(username, password).then(()=>setTimeout(()=>navigate("/passwords"),500));
     } else {
-      signup(username, password).then(()=>setTimeout(()=>navigate("/"),500));
+      signup(username, password).then(()=>setTimeout(()=>navigate("/passwords"),500));
     }
   };
 
