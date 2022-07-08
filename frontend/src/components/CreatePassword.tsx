@@ -1,6 +1,5 @@
-import { useNavigate } from "react-router-dom";
-import { Category, Password } from "../types";
-import { useEffect, useState } from "react";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import SaveIcon from "@mui/icons-material/Save";
 import {
   Button,
   FormControl,
@@ -10,12 +9,12 @@ import {
   ListItemButton,
   MenuItem,
   Select,
-  TextField,
+  TextField
 } from "@mui/material";
-import SaveIcon from "@mui/icons-material/Save";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { createUserPassword, getUserCategories } from "../services/APIService";
-import { getDecryptedUserCategories } from "../services/EncryptionService";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { createEncryptedUserPassword, getDecryptedUserCategories } from "../services/EncryptionService";
+import { Category, Password } from "../types";
 
 function CreatePassword(props : {masterPassword : string}) {
   const navigate = useNavigate();
@@ -24,12 +23,12 @@ function CreatePassword(props : {masterPassword : string}) {
   const [categories, setCategories] = useState<Category[]>([{id:-1, name: "No category"} as Category]);
 
   useEffect(() => {
-    // async function getData() {
-    //   const response = await getDecryptedUserCategories(masterPassword)
-    //   setCategories(response);
-    // }
+    async function getData() {
+      const response = await getDecryptedUserCategories(props.masterPassword)
+      setCategories(response);
+    }
 
-    // getData().then((r) => r);
+    getData().then((r) => r);
   }, []);
 
   const handleSave = async () => {
@@ -38,7 +37,7 @@ function CreatePassword(props : {masterPassword : string}) {
       passwordToSave = { ...password, category: undefined };
     }
 
-    await createUserPassword(passwordToSave).then(() => navigate("/passwords"));
+    await createEncryptedUserPassword(passwordToSave, props.masterPassword).then(() => navigate("/passwords"));
   };
 
   const updateCategory = (id: number) => {

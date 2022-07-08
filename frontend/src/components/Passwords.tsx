@@ -1,21 +1,17 @@
 import DeleteIcon from "@mui/icons-material/Delete";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import EditIcon from "@mui/icons-material/Edit";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
   Accordion,
-  AccordionDetails,
-  Box,
-  List,
+  AccordionDetails, AccordionSummary, Box, Button, List,
   ListItem,
   ListItemButton,
-  TextField,
-  AccordionSummary,
-  Button,
+  TextField
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
+import { deleteUserCategory, deleteUserPassword } from "../services/APIService";
 import { isAuthenticated } from "../services/AuthService";
-import { deleteUserCategory, deleteUserPassword, getUserCategories } from "../services/APIService";
 import { Category, Password } from "../types";
 
 function Passwords(props : {masterPassword : string}) {
@@ -23,7 +19,7 @@ function Passwords(props : {masterPassword : string}) {
 
   useEffect(() => {
     async function getData() {
-      const response = await getUserCategories();
+      const response = await getDecryptedUserCategories(props.masterPassword);
       setCategories(response);
     }
 

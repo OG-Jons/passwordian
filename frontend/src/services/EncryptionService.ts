@@ -39,6 +39,6 @@ export const updateUserPasswordAndEncrypt = async (id: number, password: Passwor
   return updateUserPassword(id, encyptPassword(password, masterPassword))
 }
 
-export const createEncryptedUserPassword = async (id: number, password: Password, masterPassword: string)=>{
+export const createEncryptedUserPassword = async (password: Password, masterPassword: string)=>{
   return createUserPassword(encyptPassword(password, masterPassword));
 }
