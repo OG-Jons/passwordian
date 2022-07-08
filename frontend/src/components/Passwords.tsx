@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { deleteUserCategory, deleteUserPassword } from "../services/APIService";
 import { isAuthenticated } from "../services/AuthService";
+import { getDecryptedUserCategories } from "../services/EncryptionService";
 import { Category, Password } from "../types";
 
 function Passwords(props : {masterPassword : string}) {
