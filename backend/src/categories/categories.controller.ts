@@ -36,7 +36,7 @@ export class CategoriesController {
 
   @Get()
   async findAll(@GetUser() user: User) {
-    return this.categoriesService.findAllOfUser(user.id);
+    return this.categoriesService.findAllOfUser(user);
   }
 
   @Get(':id')

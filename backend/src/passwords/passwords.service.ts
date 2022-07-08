@@ -1,6 +1,8 @@
 import {
   BadRequestException,
   ForbiddenException,
+  forwardRef,
+  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -17,9 +19,9 @@ export class PasswordsService {
   constructor(
     @InjectRepository(Password)
     private passwordRepository: Repository<Password>,
+    @Inject(forwardRef(() => CategoriesService))
     private categoryService: CategoriesService,
   ) {}
-
   async create(
     createPasswordDto: CreatePasswordDto,
     user: User,
@@ -55,6 +57,43 @@ export class PasswordsService {
     }
 
     return password;
+  }
+
+  async findAllFromCategory(
+    categoryID: number | null,
+    user: User,
+  ): Promise<Password[]> {
+    if (categoryID && categoryID > 0) {
+      const category = await this.categoryService.findOne(categoryID);
+      if (!category) {
+        throw new NotFoundException('Category not found');
+      }
+
+      if (
+        !(await this.checkIfUserHasPassword(user.id, categoryID)) &&
+        !(await this.categoryService.checkIfUserHasCategory(
+          user.id,
+          categoryID,
+        ))
+      ) {
+        throw new ForbiddenException('This is not your category or password');
+      }
+
+      return await this.passwordRepository.findBy({
+        category: { id: categoryID },
+        user: { id: user.id },
+      });
+    } else {
+      return await this.passwordRepository
+        .findBy({
+          user: { id: user.id },
+        })
+        .then((passwords) => {
+          return passwords.filter((password) => {
+            return !password.category;
+          });
+        });
+    }
   }
 
   async update(

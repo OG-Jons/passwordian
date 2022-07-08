@@ -30,7 +30,6 @@ export class Password {
   @ManyToOne(() => Category, (category) => category.passwords, {
     nullable: true,
     onDelete: 'SET NULL',
-    eager: true,
   })
   category: Category;
 }
