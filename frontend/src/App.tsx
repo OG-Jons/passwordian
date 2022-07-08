@@ -2,7 +2,9 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import "./App.scss";
 import Login from "./components/Login";
 import Passwords from "./components/Passwords";
+import LandingPage from "./components/LandingPage";
 import { isAuthenticated } from "./services/AuthService";
+import { useLocation } from "react-router-dom";
 import EditPassword from "./components/EditPassword";
 import EditCategory from "./components/EditCategory";
 import CreatePassword from "./components/CreatePassword";
@@ -12,10 +14,11 @@ import UpdateMasterPassword from "./components/UpdateMasterPassword";
 function App() {
   return (
     <div className="App">
-      <p className="App-header">Passwordian</p>
+      <Header />
       <Routes>
+        <Route path="/" element={<LandingPage />} />
         <Route
-          path="/"
+          path="/app"
           element={<AuthWrapper isAuthenticated={isAuthenticated()} />}
         />
         <Route path="/login" element={<Login />} />
@@ -40,6 +43,12 @@ const AuthWrapper = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
   } else {
     return <Navigate to="/login" replace />;
   }
+};
+
+const Header = () => {
+  const location = useLocation();
+  if (location.pathname === "/") return <></>;
+  else return <p className="App-header">Passwordian</p>;
 };
 
 export default App;
