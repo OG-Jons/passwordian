@@ -1,6 +1,5 @@
-import { useNavigate } from "react-router-dom";
-import { Category, Password } from "../types";
-import { useEffect, useState } from "react";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import SaveIcon from "@mui/icons-material/Save";
 import {
   Button,
   FormControl,
@@ -10,13 +9,14 @@ import {
   ListItemButton,
   MenuItem,
   Select,
-  TextField,
+  TextField
 } from "@mui/material";
-import SaveIcon from "@mui/icons-material/Save";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { createUserPassword, getUserCategories } from "../services/APIService";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { createEncryptedUserPassword, getDecryptedUserCategories } from "../services/EncryptionService";
+import { Category, Password } from "../types";
 
-function CreatePassword() {
+function CreatePassword(props : {masterPassword : string}) {
   const navigate = useNavigate();
   const [password, setPassword] = useState<Password>({} as Password);
   const [categoryId, setCategoryId] = useState<number>(-1);
@@ -24,7 +24,7 @@ function CreatePassword() {
 
   useEffect(() => {
     async function getData() {
-      const response = await getUserCategories();
+      const response = await getDecryptedUserCategories(props.masterPassword)
       setCategories(response);
     }
 
@@ -37,7 +37,7 @@ function CreatePassword() {
       passwordToSave = { ...password, category: undefined };
     }
 
-    await createUserPassword(passwordToSave).then(() => navigate("/passwords"));
+    await createEncryptedUserPassword(passwordToSave, props.masterPassword).then(() => navigate("/passwords"));
   };
 
   const updateCategory = (id: number) => {

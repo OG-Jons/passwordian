@@ -1,6 +1,5 @@
-import { useNavigate, useParams } from "react-router-dom";
-import { Category, Password } from "../types";
-import React, { useEffect, useState } from "react";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import SaveIcon from "@mui/icons-material/Save";
 import {
   Button,
   FormControl,
@@ -10,13 +9,14 @@ import {
   ListItemButton,
   MenuItem,
   Select,
-  TextField,
+  TextField
 } from "@mui/material";
-import SaveIcon from "@mui/icons-material/Save";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { getPassword, getUserCategories, updateUserPassword } from "../services/APIService";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { getDecryptedPassword, getDecryptedUserCategories, updateUserPasswordAndEncrypt } from "../services/EncryptionService";
+import { Category, Password } from "../types";
 
-function EditPassword() {
+function EditPassword(props : {masterPassword : string}) {
   const { id } = useParams();
   const navigate = useNavigate();
   const [password, setPassword] = useState<Password>();
@@ -27,12 +27,12 @@ function EditPassword() {
   useEffect(() => {
     async function getData() {
       if (!isNaN(Number(id))) {
-        const response = await getPassword(Number(id));
+        const response = await getDecryptedPassword(Number(id), props.masterPassword);
         setPassword(response);
       } else {
         alert("Invalid category id");
       }
-      const response1 = await getUserCategories();
+      const response1 = await getDecryptedUserCategories(props.masterPassword);
       setCategories(response1);
     }
 
@@ -46,7 +46,7 @@ function EditPassword() {
         passwordToSave = { ...password, category: undefined };
       }
 
-      updateUserPassword(+id, passwordToSave).then(() => navigate("/passwords"));
+      updateUserPasswordAndEncrypt(+id, passwordToSave, props.masterPassword).then(() => navigate("/passwords"));
     }
   };
 

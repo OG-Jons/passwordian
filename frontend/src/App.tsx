@@ -10,8 +10,12 @@ import EditCategory from "./components/EditCategory";
 import CreatePassword from "./components/CreatePassword";
 import CreateCategory from "./components/CreateCategory";
 import UpdateMasterPassword from "./components/UpdateMasterPassword";
+import { useState } from "react";
 
 function App() {
+  const [masterPassword, setMasterPassword] = useState<string>("");
+
+
   return (
     <div className="App">
       <Header />
@@ -21,10 +25,10 @@ function App() {
           path="/app"
           element={<AuthWrapper isAuthenticated={isAuthenticated()} />}
         />
-        <Route path="/login" element={<Login />} />
-        <Route path="/passwords" element={<Passwords />} />
-        <Route path="/passwords/:id" element={<EditPassword />} />
-        <Route path="/new-password" element={<CreatePassword />} />
+        <Route path="/login" element={<Login setMasterPassword={setMasterPassword}/>} />
+        <Route path="/passwords" element={<Passwords masterPassword={masterPassword}/>} />
+        <Route path="/passwords/:id" element={<EditPassword masterPassword={masterPassword}/>} />
+        <Route path="/new-password" element={<CreatePassword masterPassword={masterPassword}/>} />
         <Route path="/categories/:id" element={<EditCategory />} />
         <Route path="/new-category" element={<CreateCategory />} />
         <Route
