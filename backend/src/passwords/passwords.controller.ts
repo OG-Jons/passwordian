@@ -9,6 +9,7 @@ import {
   UseGuards,
   UseInterceptors,
   ClassSerializerInterceptor,
+  Put,
 } from '@nestjs/common';
 import { PasswordsService } from './passwords.service';
 import { CreatePasswordDto } from './dto/create-password.dto';
@@ -46,6 +47,14 @@ export class PasswordsController {
     return this.passwordsService.findOne(+id, user);
   }
 
+  @Get('/category/:id')
+  findAllFromCategory(
+    @Param('id') id: string,
+    @GetUser() user: User,
+  ): Promise<Password[]> {
+    return this.passwordsService.findAllFromCategory(+id, user);
+  }
+
   @Patch(':id')
   update(
     @Param('id') id: string,
@@ -61,5 +70,13 @@ export class PasswordsController {
     @GetUser() user: User,
   ): Promise<DeleteResult> {
     return this.passwordsService.remove(+id, user);
+  }
+
+  @Put()
+  updateAllPasswords(
+    @Body() updatedPasswords: UpdatePasswordDto[],
+    @GetUser() user: User,
+  ): Promise<(UpdatePasswordDto & Password)[]> {
+    return this.passwordsService.updatePasswords(updatedPasswords, user);
   }
 }

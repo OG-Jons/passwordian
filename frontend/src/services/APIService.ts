@@ -11,6 +11,19 @@ export const getUserPasswords = async (): Promise<Password[]> => {
   return http.get("/passwords").then(extract);
 };
 
+/**
+ *
+ * @param category if called with null returns all passwords without a category
+ * @returns
+ */
+export const getUserPasswordsByCategory = async (
+  category: Category | null
+): Promise<Password[]> => {
+  return http
+    .get(`/passwords/category/${category?.id ? category.id : -1}`)
+    .then(extract);
+};
+
 export const getPassword = async (id: number): Promise<Password> => {
   return http.get(`/passwords/${id}`).then(extract);
 };
@@ -29,7 +42,7 @@ export const updateUserPassword = async (
   id: number,
   password: Password
 ): Promise<Password> => {
-  return http.put(`/passwords/${id}`, { ...password }).then(extract);
+  return http.patch(`/passwords/${id}`, { ...password }).then(extract);
 };
 
 /* Auth section */
@@ -48,9 +61,14 @@ export const register = async (
   return http.post("/auth/signup", { username, password }).then(extract);
 };
 
-export const updateMasterPassword = async (password: string): Promise<null> => {
-  throw new Error("Method not implemented.");
-  //return http.put("/auth/master", { password }).then(extract);
+export const updateMasterPassword = async (
+  username: string,
+  password: string,
+  newPassword: string
+): Promise<null> => {
+  return http
+    .put("/auth/master", { username, password, newPassword })
+    .then(extract);
 };
 
 /* Category section */
@@ -77,5 +95,5 @@ export const updateUserCategory = async (
   id: number,
   category: Category
 ): Promise<Category> => {
-  return http.put(`/categories/${id}`, { ...category }).then(extract);
+  return http.patch(`/categories/${id}`, { id:category.id, name:category.name }).then(extract);
 };
