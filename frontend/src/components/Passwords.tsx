@@ -1,12 +1,14 @@
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
   Accordion,
   AccordionDetails, AccordionSummary, Box, Button, Checkbox, FormControlLabel, List,
   ListItem,
   ListItemButton,
-  TextField
+  TextField,
+  Tooltip
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
@@ -17,7 +19,6 @@ import { Category, Password } from "../types";
 
 function Passwords(props: { masterPassword: string }) {
   const [categories, setCategories] = useState<Category[]>([]);
-  const [hidePasswords, setHidePasswords] = useState<boolean>(true);
 
   useEffect(() => {
     async function getData() {
@@ -54,6 +55,18 @@ function Passwords(props: { masterPassword: string }) {
     );
   };
 
+  const copyText = (s: string) => {
+    if (window.isSecureContext) {
+      try {
+        navigator.clipboard.writeText(s);
+      } catch (e) {
+        window.alert("failed to save password to clipboard")
+      }
+    } else {
+      window.alert("copying password is not supported in non SecureContext.")
+    }
+  }
+
   if (isAuthenticated()) {
     return (
       <Box
@@ -80,20 +93,6 @@ function Passwords(props: { masterPassword: string }) {
         >
           New Category
         </Button>
-        <FormControlLabel
-          style={{
-            margin: 10,
-            justifyContent: "center",
-            paddingRight: "10px"
-          }}
-          control={
-            <Checkbox
-              checked={hidePasswords}
-              onChange={(e) => setHidePasswords(!hidePasswords)}
-              name="antoine" />
-          }
-          label="hide passwords"
-        />
         {categories.length > 0 && (
           <>
             {categories.map((category: Category) => {
@@ -164,10 +163,22 @@ function Passwords(props: { masterPassword: string }) {
                               className="passwordInput"
                               label="Password"
                               variant="outlined"
-                              type={hidePasswords ? 'password' : 'text'}
+                              type="password"
                               value={password.password}
                               disabled
                             />
+                            <Tooltip title="Copy Password">
+                              <ListItemButton
+                                className="passwordButton"
+                                onClick={() => {
+                                  if (!!password.password) {
+                                    copyText(password.password)
+                                  }
+                                }}
+                              >
+                                <ContentCopyIcon />
+                              </ListItemButton>
+                            </Tooltip>
                             <ListItemButton
                               className="passwordButton"
                               href={`/passwords/${password.id}`}
