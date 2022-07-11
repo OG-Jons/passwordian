@@ -3,7 +3,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
   Accordion,
-  AccordionDetails, AccordionSummary, Box, Button, List,
+  AccordionDetails, AccordionSummary, Box, Button, Checkbox, FormControlLabel, List,
   ListItem,
   ListItemButton,
   TextField
@@ -15,8 +15,9 @@ import { isAuthenticated } from "../services/AuthService";
 import { getDecryptedUserCategories } from "../services/EncryptionService";
 import { Category, Password } from "../types";
 
-function Passwords(props : {masterPassword : string}) {
+function Passwords(props: { masterPassword: string }) {
   const [categories, setCategories] = useState<Category[]>([]);
+  const [hidePasswords, setHidePasswords] = useState<boolean>(true);
 
   useEffect(() => {
     async function getData() {
@@ -35,10 +36,10 @@ function Passwords(props : {masterPassword : string}) {
 
   const deletePassword = (password: Password) => {
     let categoryId: number;
-    if(password.category === undefined ){
+    if (password.category === undefined) {
       categoryId = -1;
-    } else{
-      categoryId= password.category.id; 
+    } else {
+      categoryId = password.category.id;
     }
 
     deleteUserPassword(password.id).then(() =>
@@ -79,6 +80,20 @@ function Passwords(props : {masterPassword : string}) {
         >
           New Category
         </Button>
+        <FormControlLabel
+          style={{
+            margin: 10,
+            justifyContent: "center",
+            paddingRight: "10px"
+          }}
+          control={
+            <Checkbox
+              checked={hidePasswords}
+              onChange={(e) => setHidePasswords(!hidePasswords)}
+              name="antoine" />
+          }
+          label="hide passwords"
+        />
         {categories.length > 0 && (
           <>
             {categories.map((category: Category) => {
@@ -149,7 +164,7 @@ function Passwords(props : {masterPassword : string}) {
                               className="passwordInput"
                               label="Password"
                               variant="outlined"
-                              type="password"
+                              type={hidePasswords ? 'password' : 'text'}
                               value={password.password}
                               disabled
                             />
