@@ -4,7 +4,7 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
   Accordion,
-  AccordionDetails, AccordionSummary, Box, Button, Checkbox, FormControlLabel, List,
+  AccordionDetails, AccordionSummary, Box, Button, List,
   ListItem,
   ListItemButton,
   TextField,
@@ -171,7 +171,7 @@ function Passwords(props: { masterPassword: string }) {
                               <ListItemButton
                                 className="passwordButton"
                                 onClick={() => {
-                                  if (!!password.password) {
+                                  if (password.password) {
                                     copyText(password.password)
                                   }
                                 }}
