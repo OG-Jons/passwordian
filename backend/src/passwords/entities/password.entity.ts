@@ -32,4 +32,7 @@ export class Password {
     onDelete: 'SET NULL',
   })
   category: Category;
+
+  @Column({ nullable: true })
+  categoryId: number;
 }

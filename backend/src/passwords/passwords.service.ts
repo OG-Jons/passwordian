@@ -90,7 +90,7 @@ export class PasswordsService {
         })
         .then((passwords) => {
           return passwords.filter((password) => {
-            return !password.category;
+            return !password.categoryId;
           });
         });
     }
