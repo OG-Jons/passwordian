@@ -8,7 +8,7 @@ Ein Password-Manager, welcher von [@Sl1van](https://github.com/Sl1van) und [@OG-
 - Dependencies installieren
 
 ```
-cd landing-page
+cd Landingpage
 npm ci
 ```
 
