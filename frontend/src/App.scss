@@ -38,20 +38,33 @@ button {
   font-size: calc(10px + 2vmin);
 }
 
-.passwords{
+.passwords {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  .passwordInput{
+  flex-wrap: wrap;
+
+  .passwordInput {
     flex-grow: 2;
     margin: 5px;
   }
-  .passwordSelect{
+
+  .passwordSelect {
     width: 150px;
     margin: 5px;
   }
-  .passwordButton{
+
+  .passwordButton {
     justify-content: center;
   }
+
+  .password {
+    flex-wrap: wrap;
+    border: lightgrey solid 1px;
+    border-radius: 5px;
+  }
+
 }
+
+

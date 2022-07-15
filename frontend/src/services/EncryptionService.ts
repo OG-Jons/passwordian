@@ -5,6 +5,7 @@ import {
   createUserPassword,
   getPassword,
   getUserCategories,
+  updatePasswords,
   updateUserPassword,
 } from "./APIService";
 
@@ -68,4 +69,20 @@ export const createEncryptedUserPassword = async (
   masterPassword: string
 ) => {
   return createUserPassword(encryptPassword(password, masterPassword));
+};
+
+export const updateUserPasswordsAndEncrypt = async (
+  passwords: Password[],
+  oldPassword: string,
+  masterPassword: string
+) => {
+  const decrypted = passwords.map((password: Password) =>
+    decryptPassword(password, oldPassword)
+  );
+
+  return updatePasswords(
+    decrypted.map((password: Password) =>
+      encryptPassword(password, masterPassword)
+    )
+  );
 };

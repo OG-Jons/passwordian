@@ -9,25 +9,33 @@ import {
   ListItemButton,
   MenuItem,
   Select,
-  TextField
+  TextField,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getDecryptedPassword, getDecryptedUserCategories, updateUserPasswordAndEncrypt } from "../services/EncryptionService";
+import {
+  getDecryptedPassword,
+  getDecryptedUserCategories,
+  updateUserPasswordAndEncrypt,
+} from "../services/EncryptionService";
 import { Category, Password } from "../types";
 
-function EditPassword(props : {masterPassword : string}) {
+function EditPassword(props: { masterPassword: string }) {
   const { id } = useParams();
   const navigate = useNavigate();
   const [password, setPassword] = useState<Password>();
   const [categoryId, setCategoryId] = useState<number>(-1);
-  const [categories, setCategories] = useState<Category[]>([{ id: -1, name: "No category" } as Category]);
-
+  const [categories, setCategories] = useState<Category[]>([
+    { id: -1, name: "No category" } as Category,
+  ]);
 
   useEffect(() => {
     async function getData() {
       if (!isNaN(Number(id))) {
-        const response = await getDecryptedPassword(Number(id), props.masterPassword);
+        const response = await getDecryptedPassword(
+          Number(id),
+          props.masterPassword
+        );
         setPassword(response);
       } else {
         alert("Invalid category id");
@@ -46,15 +54,21 @@ function EditPassword(props : {masterPassword : string}) {
         passwordToSave = { ...password, category: undefined };
       }
 
-      updateUserPasswordAndEncrypt(+id, passwordToSave, props.masterPassword).then(() => navigate("/passwords"));
+      updateUserPasswordAndEncrypt(
+        +id,
+        passwordToSave,
+        props.masterPassword
+      ).then(() => navigate("/passwords"));
     }
   };
 
   const updateCategory = (id: number) => {
     setCategoryId(id);
-    const category: Category = categories.filter((category: Category) => category.id === id)[0];
-    setPassword({ ...password, category: category } as Password)
-  }
+    const category: Category = categories.filter(
+      (category: Category) => category.id === id
+    )[0];
+    setPassword({ ...password, category: category } as Password);
+  };
 
   return (
     <>
@@ -64,7 +78,7 @@ function EditPassword(props : {masterPassword : string}) {
       </Button>
       {password && (
         <List className="passwords">
-          <ListItem>
+          <ListItem style={{ flexWrap: "wrap" }}>
             <TextField
               className="passwordInput"
               label="Title"
@@ -119,11 +133,13 @@ function EditPassword(props : {masterPassword : string}) {
                 value={categoryId}
                 label="Category"
                 onChange={(e) => {
-                  updateCategory(e.target.value as number)
+                  updateCategory(e.target.value as number);
                 }}
               >
                 {categories.map((category: Category) => {
-                  return <MenuItem value={category.id}>{category.name}</MenuItem>
+                  return (
+                    <MenuItem value={category.id}>{category.name}</MenuItem>
+                  );
                 })}
               </Select>
             </FormControl>

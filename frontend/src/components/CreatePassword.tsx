@@ -9,22 +9,27 @@ import {
   ListItemButton,
   MenuItem,
   Select,
-  TextField
+  TextField,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { createEncryptedUserPassword, getDecryptedUserCategories } from "../services/EncryptionService";
+import {
+  createEncryptedUserPassword,
+  getDecryptedUserCategories,
+} from "../services/EncryptionService";
 import { Category, Password } from "../types";
 
-function CreatePassword(props : {masterPassword : string}) {
+function CreatePassword(props: { masterPassword: string }) {
   const navigate = useNavigate();
   const [password, setPassword] = useState<Password>({} as Password);
   const [categoryId, setCategoryId] = useState<number>(-1);
-  const [categories, setCategories] = useState<Category[]>([{id:-1, name: "No category"} as Category]);
+  const [categories, setCategories] = useState<Category[]>([
+    { id: -1, name: "No category" } as Category,
+  ]);
 
   useEffect(() => {
     async function getData() {
-      const response = await getDecryptedUserCategories(props.masterPassword)
+      const response = await getDecryptedUserCategories(props.masterPassword);
       setCategories(response);
     }
 
@@ -33,18 +38,23 @@ function CreatePassword(props : {masterPassword : string}) {
 
   const handleSave = async () => {
     let passwordToSave: Password = password;
-    if(password.id === -1){
+    if (password.id === -1) {
       passwordToSave = { ...password, category: undefined };
     }
 
-    await createEncryptedUserPassword(passwordToSave, props.masterPassword).then(() => navigate("/passwords"));
+    await createEncryptedUserPassword(
+      passwordToSave,
+      props.masterPassword
+    ).then(() => navigate("/passwords"));
   };
 
   const updateCategory = (id: number) => {
     setCategoryId(id);
-    const category: Category = categories.filter((category: Category) => category.id === id)[0];
-    setPassword({ ...password, category: category })
-  }
+    const category: Category = categories.filter(
+      (category: Category) => category.id === id
+    )[0];
+    setPassword({ ...password, category: category });
+  };
 
   return (
     <>
@@ -53,7 +63,7 @@ function CreatePassword(props : {masterPassword : string}) {
         <ArrowBackIcon />
       </Button>
       <List className="passwords">
-        <ListItem>
+        <ListItem style={{ flexWrap: "wrap" }}>
           <TextField
             className="passwordInput"
             label="Title"
@@ -111,8 +121,12 @@ function CreatePassword(props : {masterPassword : string}) {
                 updateCategory(e.target.value as number);
               }}
             >
-              {categories.map((category:Category) => {
-                return <MenuItem value={category.id}>{category.name}</MenuItem>
+              {categories.map((category: Category) => {
+                return (
+                  <MenuItem key={category.id} value={category.id}>
+                    {category.name}
+                  </MenuItem>
+                );
               })}
             </Select>
           </FormControl>
