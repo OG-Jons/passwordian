@@ -1,24 +1,31 @@
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import CachedIcon from "@mui/icons-material/Cached";
 import {
   Accordion,
-  AccordionDetails, AccordionSummary, Box, Button, List,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  Button,
+  List,
   ListItem,
   ListItemButton,
   TextField,
-  Tooltip
+  Tooltip,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { deleteUserCategory, deleteUserPassword } from "../services/APIService";
 import { isAuthenticated } from "../services/AuthService";
 import { getDecryptedUserCategories } from "../services/EncryptionService";
 import { Category, Password } from "../types";
+import Cookies from "js-cookie";
 
 function Passwords(props: { masterPassword: string }) {
   const [categories, setCategories] = useState<Category[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function getData() {
@@ -60,12 +67,12 @@ function Passwords(props: { masterPassword: string }) {
       try {
         navigator.clipboard.writeText(s);
       } catch (e) {
-        window.alert("failed to save password to clipboard")
+        window.alert("failed to save password to clipboard");
       }
     } else {
-      window.alert("copying password is not supported in non SecureContext.")
+      window.alert("copying password is not supported in non SecureContext.");
     }
-  }
+  };
 
   if (isAuthenticated()) {
     return (
@@ -78,21 +85,49 @@ function Passwords(props: { masterPassword: string }) {
           flexDirection: "column",
         }}
       >
-        <Button
-          href="/new-password"
-          variant="outlined"
-          style={{ color: "black", marginTop: "25px" }}
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            width: "100%",
+            justifyContent: "center",
+            flexDirection: "row",
+            gap: 2.5,
+            flexWrap: "wrap",
+          }}
         >
-          New Password
-        </Button>
-        <Button
-          href="/new-category"
-          variant="outlined"
-          disabled={true}
-          style={{ color: "black", marginTop: "25px" }}
-        >
-          New Category
-        </Button>
+          <Button
+            href="/new-password"
+            variant="outlined"
+            style={{ color: "black", marginTop: "25px" }}
+          >
+            New Password
+          </Button>
+          <Button
+            href="/new-category"
+            variant="outlined"
+            style={{ color: "black", marginTop: "25px" }}
+          >
+            New Category
+          </Button>
+          <Button
+            href="/update-master-password"
+            variant="outlined"
+            style={{ color: "black", marginTop: "25px" }}
+          >
+            Update Master Password
+          </Button>
+          <Button
+            variant="outlined"
+            style={{ color: "black", marginTop: "25px" }}
+            onClick={() => {
+              Cookies.remove("token");
+              navigate("/login");
+            }}
+          >
+            Logout
+          </Button>
+        </Box>
         {categories.length > 0 && (
           <>
             {categories.map((category: Category) => {
@@ -112,52 +147,64 @@ function Passwords(props: { masterPassword: string }) {
                       }}
                     >
                       <p>{category.name}</p>
-                      <Button
-                        style={{ color: "black", marginLeft: "auto" }}
-                        href={`/categories/${category.id}`}
-                      >
-                        <EditIcon style={{ marginLeft: "auto" }} />
-                      </Button>
-                      <Button
-                        style={{ color: "black" }}
-                        onClick={() => deleteCategory(Number(category.id))}
-                      >
-                        <DeleteIcon style={{ marginLeft: "auto" }} />
-                      </Button>
+                      {category.id !== -1 && (
+                        <>
+                          <Button
+                            style={{ color: "black", marginLeft: "auto" }}
+                            href={`/categories/${category.id}`}
+                          >
+                            <EditIcon style={{ marginLeft: "auto" }} />
+                          </Button>
+                          <Button
+                            style={{ color: "black" }}
+                            onClick={() => deleteCategory(Number(category.id))}
+                          >
+                            <DeleteIcon style={{ marginLeft: "auto" }} />
+                          </Button>
+                        </>
+                      )}
                     </div>
                   </AccordionSummary>
                   <AccordionDetails>
                     <List className="passwords">
                       {category.passwords.map((password: Password) => {
                         return (
-                          <ListItem key={password.id}>
+                          <ListItem className="password" key={password.id}>
                             <TextField
                               className="passwordInput"
                               label="Title"
                               variant="outlined"
                               value={password.title}
-                              disabled
+                              InputProps={{
+                                readOnly: true,
+                              }}
                             />
                             <TextField
                               className="passwordInput"
                               label="Website"
                               variant="outlined"
                               value={password.website}
-                              disabled
+                              InputProps={{
+                                readOnly: true,
+                              }}
                             />
                             <TextField
                               className="passwordInput"
                               label="Username/Email"
                               variant="outlined"
                               value={password.username}
-                              disabled
+                              InputProps={{
+                                readOnly: true,
+                              }}
                             />
                             <TextField
                               className="passwordInput"
                               label="description"
                               variant="outlined"
                               value={password.description}
-                              disabled
+                              InputProps={{
+                                readOnly: true,
+                              }}
                             />
                             <TextField
                               className="passwordInput"
@@ -165,14 +212,16 @@ function Passwords(props: { masterPassword: string }) {
                               variant="outlined"
                               type="password"
                               value={password.password}
-                              disabled
+                              InputProps={{
+                                readOnly: true,
+                              }}
                             />
                             <Tooltip title="Copy Password">
                               <ListItemButton
                                 className="passwordButton"
                                 onClick={() => {
                                   if (password.password) {
-                                    copyText(password.password)
+                                    copyText(password.password);
                                   }
                                 }}
                               >
@@ -187,9 +236,7 @@ function Passwords(props: { masterPassword: string }) {
                             </ListItemButton>
                             <ListItemButton
                               className="passwordButton"
-                              onClick={() =>
-                                deletePassword(password)
-                              }
+                              onClick={() => deletePassword(password)}
                             >
                               <DeleteIcon />
                             </ListItemButton>
@@ -203,6 +250,13 @@ function Passwords(props: { masterPassword: string }) {
             })}
           </>
         )}
+        <Button
+          onClick={() => {
+            window.location.reload();
+          }}
+        >
+          <CachedIcon />
+        </Button>
       </Box>
     );
   } else {

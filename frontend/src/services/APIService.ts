@@ -1,5 +1,7 @@
 import { Category, Password } from "../types";
 import http from "./http";
+import { updateUserPasswordsAndEncrypt } from "./EncryptionService";
+import Cookies from "js-cookie";
 
 const extract = (data: any) => {
   return data.data;
@@ -45,6 +47,11 @@ export const updateUserPassword = async (
   return http.patch(`/passwords/${id}`, { ...password }).then(extract);
 };
 
+export const updatePasswords = async (
+  passwords: Password[]
+): Promise<Password[]> => {
+  return http.put("/passwords", passwords).then(extract);
+};
 /* Auth section */
 
 export const login = async (
@@ -65,10 +72,17 @@ export const updateMasterPassword = async (
   username: string,
   password: string,
   newPassword: string
-): Promise<null> => {
+): Promise<void> => {
   return http
     .put("/auth/master", { username, password, newPassword })
-    .then(extract);
+    .then(async (r) => {
+      const { accessToken } = await r.data;
+      await Cookies.set("token", accessToken);
+
+      const userPasswords = await getUserPasswords();
+
+      await updateUserPasswordsAndEncrypt(userPasswords, password, newPassword);
+    });
 };
 
 /* Category section */
@@ -95,5 +109,7 @@ export const updateUserCategory = async (
   id: number,
   category: Category
 ): Promise<Category> => {
-  return http.patch(`/categories/${id}`, { id:category.id, name:category.name }).then(extract);
+  return http
+    .patch(`/categories/${id}`, { id: category.id, name: category.name })
+    .then(extract);
 };

@@ -55,7 +55,6 @@ export class UserService {
   ): Promise<boolean> {
     const { username, password, newPassword } = updatePasswordDto;
     const user = await this.userRepository.findOne({ where: { username } });
-
     if (user && (await user.validatePassword(password))) {
       user.masterPassword = await this.encryptionService.encryptWithSalt(
         newPassword,

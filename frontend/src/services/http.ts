@@ -32,8 +32,15 @@ instance.interceptors.request.use(async (request) => {
  */
 instance.interceptors.response.use(
   (response) => response,
-  () => {
-    alert("An error occurred. Please try again later.");
+  (e) => {
+    const { data } = e.response;
+    if (typeof data.message === "string") {
+      console.error(data.message);
+    } else {
+      data.message.forEach((message: string) => {
+        alert(message);
+      });
+    }
     /*    if (error.response.status === 403) router.push('/forbidden');
     if (error.response.status === 404) router.push('/not-found');*/
   }

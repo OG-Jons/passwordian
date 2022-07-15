@@ -47,7 +47,7 @@ export class AuthService {
     );
 
     if (!updated) {
-      throw new UnauthorizedException('Invalid credentials');
+      throw new UnauthorizedException('Invalid credentials on update');
     }
 
     const payload: JwtPayload = { username };
