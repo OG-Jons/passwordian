@@ -1,14 +1,18 @@
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
   Accordion,
-  AccordionDetails, AccordionSummary, Box, Button, List,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  Button,
+  List,
   ListItem,
   ListItemButton,
   TextField,
-  Tooltip
+  Tooltip,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
@@ -60,12 +64,12 @@ function Passwords(props: { masterPassword: string }) {
       try {
         navigator.clipboard.writeText(s);
       } catch (e) {
-        window.alert("failed to save password to clipboard")
+        window.alert("failed to save password to clipboard");
       }
     } else {
-      window.alert("copying password is not supported in non SecureContext.")
+      window.alert("copying password is not supported in non SecureContext.");
     }
-  }
+  };
 
   if (isAuthenticated()) {
     return (
@@ -136,28 +140,36 @@ function Passwords(props: { masterPassword: string }) {
                               label="Title"
                               variant="outlined"
                               value={password.title}
-                              disabled
+                              InputProps={{
+                                readOnly: true,
+                              }}
                             />
                             <TextField
                               className="passwordInput"
                               label="Website"
                               variant="outlined"
                               value={password.website}
-                              disabled
+                              InputProps={{
+                                readOnly: true,
+                              }}
                             />
                             <TextField
                               className="passwordInput"
                               label="Username/Email"
                               variant="outlined"
                               value={password.username}
-                              disabled
+                              InputProps={{
+                                readOnly: true,
+                              }}
                             />
                             <TextField
                               className="passwordInput"
                               label="description"
                               variant="outlined"
                               value={password.description}
-                              disabled
+                              InputProps={{
+                                readOnly: true,
+                              }}
                             />
                             <TextField
                               className="passwordInput"
@@ -165,14 +177,16 @@ function Passwords(props: { masterPassword: string }) {
                               variant="outlined"
                               type="password"
                               value={password.password}
-                              disabled
+                              InputProps={{
+                                readOnly: true,
+                              }}
                             />
                             <Tooltip title="Copy Password">
                               <ListItemButton
                                 className="passwordButton"
                                 onClick={() => {
                                   if (password.password) {
-                                    copyText(password.password)
+                                    copyText(password.password);
                                   }
                                 }}
                               >
@@ -187,9 +201,7 @@ function Passwords(props: { masterPassword: string }) {
                             </ListItemButton>
                             <ListItemButton
                               className="passwordButton"
-                              onClick={() =>
-                                deletePassword(password)
-                              }
+                              onClick={() => deletePassword(password)}
                             >
                               <DeleteIcon />
                             </ListItemButton>
