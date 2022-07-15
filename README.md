@@ -1,6 +1,23 @@
 # passwordian
 Ein Password-Manager, welcher von [@Sl1van](https://github.com/Sl1van) und [@OG-Jons](https://github.com/OG-Jons) entwickelt wurde.
 ## Applikation lokal starten
+
+### Landing Page 
+**Seperat starten von der main-app, kann nicht direkt darauf zugreifen**
+
+- Dependencies installieren
+
+```
+cd landing-page
+npm ci
+```
+
+- Starten
+
+```
+npm run start
+```
+
 ### Backend
 
 - Dependencies installieren
