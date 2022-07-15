@@ -147,18 +147,22 @@ function Passwords(props: { masterPassword: string }) {
                       }}
                     >
                       <p>{category.name}</p>
-                      <Button
-                        style={{ color: "black", marginLeft: "auto" }}
-                        href={`/categories/${category.id}`}
-                      >
-                        <EditIcon style={{ marginLeft: "auto" }} />
-                      </Button>
-                      <Button
-                        style={{ color: "black" }}
-                        onClick={() => deleteCategory(Number(category.id))}
-                      >
-                        <DeleteIcon style={{ marginLeft: "auto" }} />
-                      </Button>
+                      {category.id !== -1 && (
+                        <>
+                          <Button
+                            style={{ color: "black", marginLeft: "auto" }}
+                            href={`/categories/${category.id}`}
+                          >
+                            <EditIcon style={{ marginLeft: "auto" }} />
+                          </Button>
+                          <Button
+                            style={{ color: "black" }}
+                            onClick={() => deleteCategory(Number(category.id))}
+                          >
+                            <DeleteIcon style={{ marginLeft: "auto" }} />
+                          </Button>
+                        </>
+                      )}
                     </div>
                   </AccordionSummary>
                   <AccordionDetails>
@@ -248,7 +252,7 @@ function Passwords(props: { masterPassword: string }) {
         )}
         <Button
           onClick={() => {
-            navigate("/password");
+            window.location.reload();
           }}
         >
           <CachedIcon />
