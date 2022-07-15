@@ -1,12 +1,14 @@
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
   Accordion,
   AccordionDetails, AccordionSummary, Box, Button, List,
   ListItem,
   ListItemButton,
-  TextField
+  TextField,
+  Tooltip
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
@@ -15,7 +17,7 @@ import { isAuthenticated } from "../services/AuthService";
 import { getDecryptedUserCategories } from "../services/EncryptionService";
 import { Category, Password } from "../types";
 
-function Passwords(props : {masterPassword : string}) {
+function Passwords(props: { masterPassword: string }) {
   const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
@@ -35,10 +37,10 @@ function Passwords(props : {masterPassword : string}) {
 
   const deletePassword = (password: Password) => {
     let categoryId: number;
-    if(password.category === undefined ){
+    if (password.category === undefined) {
       categoryId = -1;
-    } else{
-      categoryId= password.category.id; 
+    } else {
+      categoryId = password.category.id;
     }
 
     deleteUserPassword(password.id).then(() =>
@@ -52,6 +54,18 @@ function Passwords(props : {masterPassword : string}) {
       )
     );
   };
+
+  const copyText = (s: string) => {
+    if (window.isSecureContext) {
+      try {
+        navigator.clipboard.writeText(s);
+      } catch (e) {
+        window.alert("failed to save password to clipboard")
+      }
+    } else {
+      window.alert("copying password is not supported in non SecureContext.")
+    }
+  }
 
   if (isAuthenticated()) {
     return (
@@ -153,6 +167,18 @@ function Passwords(props : {masterPassword : string}) {
                               value={password.password}
                               disabled
                             />
+                            <Tooltip title="Copy Password">
+                              <ListItemButton
+                                className="passwordButton"
+                                onClick={() => {
+                                  if (password.password) {
+                                    copyText(password.password)
+                                  }
+                                }}
+                              >
+                                <ContentCopyIcon />
+                              </ListItemButton>
+                            </Tooltip>
                             <ListItemButton
                               className="passwordButton"
                               href={`/passwords/${password.id}`}
